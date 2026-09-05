@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "workspace": {
+    "name": "个人主页",
+    "createdAt": 1788428551118,
+    "preset": "starter"
+  },
+  "authorizedRoots": [
+    "C:\\Users\\LIU JUNTING\\Desktop\\Vibe Coding\\个人主页"
+  ],
+  "reload": null
+}

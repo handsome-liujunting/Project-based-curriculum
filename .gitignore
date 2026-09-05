@@ -1,0 +1,15 @@
+# 输入材料与临时文件（不纳入版本控制）
+uploads/
+*.pdf
+*.log
+
+# 系统 / 编辑器 / 环境杂项
+.DS_Store
+Thumbs.db
+desktop.ini
+.swp
+*.swo
+.idea/
+.vscode/
+node_modules/
+*.tmp
