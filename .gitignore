@@ -2,6 +2,7 @@
 uploads/
 *.pdf
 *.log
+.deepworks/
 
 # 编码工具本地配置（不纳入产品仓库）
 .opencode/
