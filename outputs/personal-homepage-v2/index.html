@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="刘俊廷的个人主页 —— 计算机科学与技术专业，校级三分王，爱唱跳rap篮球。" />
+  <meta name="author" content="刘俊廷" />
+  <title>刘俊廷 · 个人主页 v2</title>
+  <!-- V2 说明：不引用任何外部字体/图标/CDN，全部使用系统字体与自绘元素，零版权风险 -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body id="top">
+  <!-- ===== Header 顶部粘性导航（分区式） ===== -->
+  <header class="site-header" id="siteHeader">
+    <nav class="nav" aria-label="主导航">
+      <a class="nav__brand" href="#top">刘俊廷<span class="nav__brand-dot">.</span></a>
+      <button class="nav__toggle" id="navToggle" aria-controls="navMenu" aria-expanded="false" aria-label="展开菜单">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__menu" id="navMenu">
+        <li><a href="#about"><b>01</b>关于我</a></li>
+        <li><a href="#skills"><b>02</b>技能兴趣</a></li>
+        <li><a href="#projects"><b>03</b>项目作品</a></li>
+        <li><a href="#dialogue"><b>04</b>数字分身</a></li>
+        <li><a href="#contact"><b>05</b>联系我</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ===== Hero 首屏 ===== -->
+    <section class="hero">
+      <div class="hero__inner">
+        <p class="hero__eyebrow reveal">HELLO · 你好，我是</p>
+        <h1 class="hero__name reveal">刘俊廷</h1>
+        <p class="hero__tagline reveal">计算机科学与技术专业 · 校级三分王 · 爱唱跳 rap 篮球</p>
+        <p class="hero__intro reveal">
+          在球场找手感，在代码里找感觉。用 Vibe Coding 把一个"能看"的页面，
+          慢慢打磨成"属于我"的作品。
+        </p>
+        <div class="hero__badges reveal">
+          <span class="badge">CS 学生</span>
+          <span class="badge">三分王</span>
+          <span class="badge">唱跳 rap 篮球</span>
+          <span class="badge">深圳 · 南山区</span>
+        </div>
+        <div class="hero__actions reveal">
+          <a class="btn btn--primary" href="#projects">看看我的作品</a>
+          <a class="btn btn--ghost" href="#contact">联系我</a>
+        </div>
+      </div>
+      <div class="hero__blob" aria-hidden="true"></div>
+    </section>
+
+    <!-- ===== 01 关于我 ===== -->
+    <section id="about" class="section">
+      <header class="section__header reveal">
+        <p class="section__index">01</p>
+        <h2 class="section__title">关于我</h2>
+        <p class="section__lead">用几张卡片，快速认识一下我。</p>
+      </header>
+
+      <div class="about">
+        <article class="profile reveal">
+          <div class="profile__avatar" aria-label="字母头像占位">LJT</div>
+          <p class="profile__hello">你好，我是刘俊廷</p>
+          <p class="profile__note">一个喜欢把想法变成页面、把球投进篮筐的人。</p>
+          <p class="profile__meta">📍 广东 · 深圳 · 南山区</p>
+        </article>
+
+        <div class="about__grid">
+          <article class="card reveal">
+            <div class="card__icon" aria-hidden="true">🎓</div>
+            <h3 class="card__title">身份</h3>
+            <p class="card__body">计算机科学与技术专业学生，正在学习 Web 开发与产品思维。</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__icon" aria-hidden="true">🎯</div>
+            <h3 class="card__title">方向</h3>
+            <p class="card__body">关注前端与交互体验，希望做出真实、好用、能持续迭代的产品。</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__icon" aria-hidden="true">🏀</div>
+            <h3 class="card__title">记忆点</h3>
+            <p class="card__body">校级三分王，爱唱跳 rap 篮球 —— 球场上的活力创作者。</p>
+          </article>
+          <article class="card reveal">
+            <div class="card__icon" aria-hidden="true">✨</div>
+            <h3 class="card__title">关键词</h3>
+            <p class="card__body">Vibe Coding、持续打磨、把热爱做成作品。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 02 技能与兴趣（Bento 便当网格） ===== -->
+    <section id="skills" class="section">
+      <header class="section__header reveal">
+        <p class="section__index">02</p>
+        <h2 class="section__title">技能与兴趣</h2>
+        <p class="section__lead">技能让我能做出东西，兴趣让我愿意一直做下去。</p>
+      </header>
+
+      <div class="bento">
+        <article class="bento__item bento__item--wide reveal">
+          <h3 class="bento__title">正在学习</h3>
+          <div class="chips">
+            <span class="chip">HTML</span>
+            <span class="chip">CSS</span>
+            <span class="chip">JavaScript</span>
+            <span class="chip">Git</span>
+            <span class="chip">响应式布局</span>
+          </div>
+        </article>
+        <article class="bento__item bento__item--accent reveal">
+          <div class="bento__emoji" aria-hidden="true">🏀</div>
+          <h3 class="bento__title">篮球</h3>
+          <p class="bento__text">校级三分王，手感来了谁都挡不住。</p>
+        </article>
+        <article class="bento__item reveal">
+          <div class="bento__emoji" aria-hidden="true">🎤</div>
+          <h3 class="bento__title">唱跳 &amp; Rap</h3>
+          <p class="bento__text">练习室和球场一样，都是我的舞台。</p>
+        </article>
+        <article class="bento__item bento__item--tall reveal">
+          <div class="bento__emoji" aria-hidden="true">💻</div>
+          <h3 class="bento__title">Vibe Coding</h3>
+          <p class="bento__text">和 AI 一起把想法快速变成能跑、能看的真实页面。</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== 03 项目与作品 ===== -->
+    <section id="projects" class="section">
+      <header class="section__header reveal">
+        <p class="section__index">03</p>
+        <h2 class="section__title">项目与作品</h2>
+        <p class="section__lead">
+          <span class="tag-note">示例占位 · 待补充真实项目</span>
+          这里会展示我代表性的项目，每条都给出简介与链接。
+        </p>
+      </header>
+
+      <div class="cards">
+        <article class="card card--project reveal">
+          <span class="card__badge">主线作品</span>
+          <h3 class="card__title">个人主页 · V1 → V2</h3>
+          <p class="card__body">用纯 HTML/CSS/JS 把页面从"能看"打磨到"能发布"的完整过程，就是我的第一个真实作品。</p>
+          <a class="link" href="#top">回到顶部看看 →</a>
+        </article>
+        <article class="card card--project reveal">
+          <span class="card__badge card__badge--muted">待补充</span>
+          <h3 class="card__title">课程设计 / 课设项目</h3>
+          <p class="card__body">这里留一个位置，之后补充我的课程设计或团队项目。</p>
+          <span class="card__muted">链接待补充</span>
+        </article>
+        <article class="card card--project reveal">
+          <span class="card__badge card__badge--muted">待补充</span>
+          <h3 class="card__title">兴趣小实验</h3>
+          <p class="card__body">这里留一个位置，之后补充我的兴趣作品或小实验。</p>
+          <span class="card__muted">链接待补充</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== 04 数字分身 · 对话入口原型 ===== -->
+    <section id="dialogue" class="section">
+      <header class="section__header reveal">
+        <p class="section__index">04</p>
+        <h2 class="section__title">数字分身</h2>
+        <p class="section__lead">这是对话能力的静态原型占位，后续会接入真实的问答能力。</p>
+      </header>
+
+      <div class="dialogue reveal">
+        <div class="dialogue__avatar">LJT</div>
+        <div class="dialogue__body">
+          <p class="dialogue__hint">你好，我是数字分身「刘俊廷」。目前是静态原型，很快就能和我对话啦。</p>
+          <div class="dialogue__input">
+            <span class="dialogue__placeholder">输入你想问的问题…</span>
+            <button class="dialogue__send" id="dialogueSend" type="button">发送</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 05 联系我 ===== -->
+    <section id="contact" class="section">
+      <header class="section__header reveal">
+        <p class="section__index">05</p>
+        <h2 class="section__title">联系我</h2>
+        <p class="section__lead">如果你想和我交流，这是我的真实联系方式，欢迎随时找我。</p>
+      </header>
+
+      <div class="contact reveal">
+        <a class="btn btn--primary btn--lg" href="mailto:2909114517@qq.com?subject=你好，刘俊廷">
+          2909114517@qq.com
+        </a>
+        <p class="contact__note">期待与你连接，一起玩转代码与球场。</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Footer 页脚 ===== -->
+  <footer class="site-footer">
+    <p class="site-footer__brand">刘俊廷<span>.</span></p>
+    <p>© 2026 刘俊廷 · 用 Vibe Coding 做出的真实产品</p>
+    <p class="site-footer__meta">
+      v2.0 · 纯静态 HTML / CSS / JS · 参考仅借鉴设计思路，未复制任何第三方素材
+    </p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
