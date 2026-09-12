@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- 只有 JS 可用时才启用"滚动淡入"的初始隐藏，避免脚本失效导致内容不可见 -->
+<script>document.documentElement.classList.add("js");</script>
+<title>刘俊廷 · 个人主页</title>
+<meta name="description" content="刘俊廷的个人主页 —— 计算机科学与技术专业，文史哲爱好者，也爱唱跳 rap 篮球。" />
+<meta name="theme-color" content="#2E7DE0" />
+<meta property="og:title" content="刘俊廷 · 个人主页" />
+<meta property="og:description" content="计算机科学与技术 · 文史哲爱好者 · 唱跳 rap 篮球" />
+<meta property="og:type" content="website" />
+
+<!--
+  ============================================================
+  V3 —— 美漫 / 超级英雄风格
+  ------------------------------------------------------------
+  设计借鉴：仅借鉴"漫画分镜"这一通用设计语言（网点、描边、气泡、
+            分镜面板、色块分区）。未复制任何第三方品牌名、角色形象、
+            插画、文案或 Logo。
+  素材清单：全部图形由 CSS 自绘；无任何位图。
+  字体：Bangers（拉丁）+ ZCOOL KuaiLe 站酷快乐体（中文）
+        均为 SIL Open Font License 1.1，已自托管于 assets/fonts/
+        授权全文见 assets/fonts/OFL-*.txt
+  ============================================================
+-->
+<link rel="preload" href="assets/fonts/zcool-kuaile-subset.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/fonts/bangers-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<a class="skip" href="#main">跳到主要内容</a>
+
+<!-- ================= 顶部导航 ================= -->
+<header class="topbar">
+  <a class="topbar__logo" href="#top">刘俊廷</a>
+  <nav class="topbar__nav" aria-label="主导航">
+    <a href="#story">故事</a>
+    <a href="#skills">技能</a>
+    <a href="#works">作品</a>
+    <a href="#contact">联系</a>
+  </nav>
+  <!-- 阅读进度条 -->
+  <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+</header>
+
+<main id="main">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="top">
+    <div class="rays" aria-hidden="true"></div>
+    <div class="sparks" aria-hidden="true">
+      <span class="spark spark--1"></span>
+      <span class="spark spark--2"></span>
+      <span class="spark spark--3"></span>
+      <span class="spark spark--4"></span>
+      <span class="spark spark--5"></span>
+      <span class="spark spark--6"></span>
+      <span class="spark spark--7"></span>
+      <span class="spark spark--8"></span>
+    </div>
+    <div class="hero__sun" aria-hidden="true"></div>
+    <div class="skyline" aria-hidden="true">
+      <span class="bld b1"></span><span class="bld b2"></span><span class="bld b3"></span>
+      <span class="bld b4"></span><span class="bld b5"></span><span class="bld b6"></span>
+      <span class="bld b7"></span><span class="bld b8"></span><span class="bld b9"></span>
+    </div>
+
+    <div class="hero__inner">
+      <p class="kicker">刘俊廷 · 个人主页</p>
+      <h1 class="hero__title">刘俊廷<span class="bang">!</span></h1>
+      <p class="hero__sub">计算机科学与技术 · 文史哲爱好者 · 唱跳 rap 篮球</p>
+      <div class="hero__cta">
+        <a class="btn btn--red" href="#works">查看作品</a>
+        <a class="btn btn--blue" href="#story">我的故事</a>
+      </div>
+    </div>
+
+    <p class="burst" aria-hidden="true">叮！</p>
+    <p class="bubble bubble--hero">你好，我是刘俊廷，很高兴认识你！</p>
+  </section>
+
+  <!-- ================= 跑马灯 =================
+       每组内含 2 遍序列，配合 CSS 的 min-width:100vw，
+       保证任何宽度的屏幕都不会出现空档。 -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track">
+      <span class="tk-group">
+        <span class="tk">刘俊廷</span><span class="tk tk--star">★</span><span class="tk tk--alt">计算机科学与技术</span><span class="tk tk--star">★</span><span class="tk">文史哲爱好者</span><span class="tk tk--star">★</span><span class="tk tk--alt">唱跳 rap 篮球</span><span class="tk tk--star">★</span><span class="tk">深圳 · 南山区</span><span class="tk tk--star">★</span>
+        <span class="tk">刘俊廷</span><span class="tk tk--star">★</span><span class="tk tk--alt">计算机科学与技术</span><span class="tk tk--star">★</span><span class="tk">文史哲爱好者</span><span class="tk tk--star">★</span><span class="tk tk--alt">唱跳 rap 篮球</span><span class="tk tk--star">★</span><span class="tk">深圳 · 南山区</span><span class="tk tk--star">★</span>
+      </span>
+      <span class="tk-group">
+        <span class="tk">刘俊廷</span><span class="tk tk--star">★</span><span class="tk tk--alt">计算机科学与技术</span><span class="tk tk--star">★</span><span class="tk">文史哲爱好者</span><span class="tk tk--star">★</span><span class="tk tk--alt">唱跳 rap 篮球</span><span class="tk tk--star">★</span><span class="tk">深圳 · 南山区</span><span class="tk tk--star">★</span>
+        <span class="tk">刘俊廷</span><span class="tk tk--star">★</span><span class="tk tk--alt">计算机科学与技术</span><span class="tk tk--star">★</span><span class="tk">文史哲爱好者</span><span class="tk tk--star">★</span><span class="tk tk--alt">唱跳 rap 篮球</span><span class="tk tk--star">★</span><span class="tk">深圳 · 南山区</span><span class="tk tk--star">★</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- ================= 01 故事开场 ================= -->
+  <section class="section section--blue" id="story">
+    <span class="rail" aria-hidden="true"><i class="rail__track"><b class="rail__fill"></b></i><b class="rail__dot"></b></span>
+    <h2 class="h-title reveal">故事，从一行代码开始：</h2>
+    <span class="sfx sfx--story" aria-hidden="true">哇！</span>
+    <p class="section__lead reveal">三个格子，先把我讲给你听。</p>
+    <div class="rule" aria-hidden="true"></div>
+
+    <div class="strip">
+      <article class="panel reveal">
+        <span class="panel__tag">第一格</span>
+        <div class="panel__stage">
+          <span class="actor" aria-hidden="true">🧑‍💻</span>
+          <p class="bubble">大家好，我是刘俊廷，计算机科学与技术专业。</p>
+        </div>
+      </article>
+
+      <article class="panel reveal">
+        <span class="panel__tag">第二格</span>
+        <div class="panel__stage">
+          <span class="actor" aria-hidden="true">🎤</span>
+          <p class="bubble bubble--alt">课堂之外，我爱唱跳 rap 篮球。</p>
+        </div>
+      </article>
+
+      <article class="panel reveal">
+        <span class="panel__tag">第三格</span>
+        <div class="panel__stage">
+          <span class="actor" aria-hidden="true">📚</span>
+          <p class="bubble">最近在读文史哲，越读越上头。</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= 黄色 CTA 条 ================= -->
+  <aside class="strip-cta">
+    <h2 class="strip-cta__title">想看看我做过什么吗？</h2>
+    <p class="strip-cta__text">这里放着我正在打磨的作品和小实验。</p>
+    <a class="btn btn--blue btn--lg" href="#works">现在就去看</a>
+    <span class="barcode" aria-hidden="true"></span>
+    <span class="sfx sfx--cta" aria-hidden="true">嗖！</span>
+  </aside>
+
+  <!-- ================= 02 技能与兴趣 ================= -->
+  <section class="section section--yellow" id="skills">
+    <span class="rail" aria-hidden="true"><i class="rail__track"><b class="rail__fill"></b></i><b class="rail__dot"></b></span>
+    <h2 class="h-title reveal">技能与兴趣！</h2>
+    <p class="section__lead reveal">技术让我做出东西，爱好让我愿意一直做下去。</p>
+    <div class="rule" aria-hidden="true"></div>
+
+    <div class="grid">
+      <article class="panel panel--skill reveal">
+        <span class="panel__tag">正在学习</span>
+        <div class="chips">
+          <span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span>
+          <span class="chip">Git</span><span class="chip">响应式布局</span>
+        </div>
+      </article>
+
+      <article class="panel panel--skill reveal">
+        <span class="panel__tag">篮球</span>
+        <p class="panel__text">有空就去球场投几个，运动让脑子更清醒。</p>
+      </article>
+
+      <article class="panel panel--skill reveal">
+        <span class="panel__tag">唱跳 &amp; Rap</span>
+        <p class="panel__text">练习室和球场一样，都是我的舞台。</p>
+      </article>
+
+      <article class="panel panel--skill reveal">
+        <span class="panel__tag">文史哲</span>
+        <p class="panel__text">喜欢顺着一个问题，读上一下午。</p>
+      </article>
+
+      <article class="panel panel--skill reveal">
+        <span class="panel__tag">Vibe Coding</span>
+        <p class="panel__text">和 AI 一起，把想法快速变成能跑的页面。</p>
+      </article>
+
+      <article class="panel panel--skill reveal">
+        <span class="panel__tag">坐标</span>
+        <p class="panel__text">广东 · 深圳 · 南山区。</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= 03 近期战绩 ================= -->
+  <section class="section section--blue" id="works">
+    <span class="rail" aria-hidden="true"><i class="rail__track"><b class="rail__fill"></b></i><b class="rail__dot"></b></span>
+    <h2 class="h-title reveal">近期战绩！</h2>
+    <span class="sfx sfx--works" aria-hidden="true">啪！</span>
+    <p class="section__lead reveal">作品还在陆续补上，先把已经做好的放这里。</p>
+    <div class="rule" aria-hidden="true"></div>
+
+    <div class="grid grid--works">
+      <article class="panel panel--work reveal">
+        <span class="panel__tag">网页</span>
+        <h3 class="panel__title">个人主页 V1</h3>
+        <p class="panel__text">从"能看"到"能发布"的第一版。</p>
+      </article>
+      <article class="panel panel--work reveal">
+        <span class="panel__tag">网页</span>
+        <h3 class="panel__title">个人主页 V2</h3>
+        <p class="panel__text">卡片化布局 + 活力配色的迭代版。</p>
+      </article>
+      <article class="panel panel--work reveal">
+        <span class="panel__tag panel__tag--muted">待补充</span>
+        <h3 class="panel__title">课程设计</h3>
+        <p class="panel__text">这里之后放我的课设项目。</p>
+      </article>
+      <article class="panel panel--work reveal">
+        <span class="panel__tag panel__tag--muted">待补充</span>
+        <h3 class="panel__title">兴趣小实验</h3>
+        <p class="panel__text">这里之后放我随手写的小实验。</p>
+      </article>
+      <article class="panel panel--work reveal">
+        <span class="panel__tag">原型</span>
+        <h3 class="panel__title">数字分身</h3>
+        <p class="panel__text">对话入口的静态原型。</p>
+      </article>
+      <article class="panel panel--work reveal">
+        <span class="panel__tag panel__tag--muted">待补充</span>
+        <h3 class="panel__title">更多作品</h3>
+        <p class="panel__text">敬请期待。</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= 04 我的台词 ================= -->
+  <section class="section section--pink" id="words">
+    <span class="rail" aria-hidden="true"><i class="rail__track"><b class="rail__fill"></b></i><b class="rail__dot"></b></span>
+    <h2 class="h-title reveal">我的台词：</h2>
+    <p class="section__lead reveal">如果一定要总结，大概是这样。</p>
+    <div class="rule" aria-hidden="true"></div>
+
+    <div class="voices">
+      <div class="voice reveal">
+        <span class="actor actor--round" aria-hidden="true">🧑‍💻</span>
+        <p class="bubble">写代码和打球一个道理：手感是练出来的。</p>
+      </div>
+      <div class="voice voice--right reveal">
+        <span class="actor actor--round" aria-hidden="true">📚</span>
+        <p class="bubble bubble--alt">读文史哲，是为了把问题想得更远一点。</p>
+      </div>
+      <div class="voice reveal">
+        <span class="actor actor--round" aria-hidden="true">🎤</span>
+        <p class="bubble">舞台和球场，都是我自己的场子。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 05 联系 ================= -->
+  <section class="section section--red" id="contact">
+    <span class="rail" aria-hidden="true"><i class="rail__track"><b class="rail__fill"></b></i><b class="rail__dot"></b></span>
+    <h2 class="h-title h-title--big reveal">每个主角<br />都有自己的开场白</h2>
+    <p class="section__lead reveal">想认识一下的话，随时找我。</p>
+    <div class="rule" aria-hidden="true"></div>
+    <div class="contact reveal">
+      <a class="btn btn--yellow btn--lg" href="mailto:2909114517@qq.com?subject=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E5%88%98%E4%BF%8A%E5%BB%B7">2909114517@qq.com</a>
+      <span class="barcode barcode--light" aria-hidden="true"></span>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= 跑马灯（收尾） ================= -->
+<div class="ticker ticker--foot" aria-hidden="true">
+  <div class="ticker__track">
+    <span class="tk-group">
+      <span class="tk">想看就看</span><span class="tk tk--star">★</span><span class="tk tk--alt">想聊就聊</span><span class="tk tk--star">★</span><span class="tk">邮箱在下面</span><span class="tk tk--star">★</span><span class="tk tk--alt">欢迎来找我</span><span class="tk tk--star">★</span>
+      <span class="tk">想看就看</span><span class="tk tk--star">★</span><span class="tk tk--alt">想聊就聊</span><span class="tk tk--star">★</span><span class="tk">邮箱在下面</span><span class="tk tk--star">★</span><span class="tk tk--alt">欢迎来找我</span><span class="tk tk--star">★</span>
+    </span>
+    <span class="tk-group">
+      <span class="tk">想看就看</span><span class="tk tk--star">★</span><span class="tk tk--alt">想聊就聊</span><span class="tk tk--star">★</span><span class="tk">邮箱在下面</span><span class="tk tk--star">★</span><span class="tk tk--alt">欢迎来找我</span><span class="tk tk--star">★</span>
+      <span class="tk">想看就看</span><span class="tk tk--star">★</span><span class="tk tk--alt">想聊就聊</span><span class="tk tk--star">★</span><span class="tk">邮箱在下面</span><span class="tk tk--star">★</span><span class="tk tk--alt">欢迎来找我</span><span class="tk tk--star">★</span>
+    </span>
+  </div>
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+  <p class="site-footer__big" aria-hidden="true">刘俊廷</p>
+  <nav class="site-footer__nav" aria-label="页脚导航">
+    <a href="#story">故事</a>
+    <a href="#skills">技能</a>
+    <a href="#works">作品</a>
+    <a href="#contact">联系</a>
+  </nav>
+  <p class="site-footer__meta">纯 CSS 自绘 · 无任何第三方素材</p>
+  <p class="site-footer__meta">字体 Bangers / ZCOOL KuaiLe · SIL Open Font License 1.1</p>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
