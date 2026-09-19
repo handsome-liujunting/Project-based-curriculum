@@ -566,7 +566,6 @@ img, svg { max-width: 100%; display: block; }
 }
 .site-footer__nav { display: flex; justify-content: center; gap: 20px; margin: 22px 0 10px; font-weight: 700; }
 .site-footer__nav a:hover { color: var(--yellow); }
-.site-footer__meta { font-size: .78rem; opacity: .72; }
 
 /* =========================================================
    动效层（全部只动 opacity / translate / scale / rotate，性能友好）
