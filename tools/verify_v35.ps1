@@ -1,8 +1,31 @@
 # V3.5 structure / asset / link verification (pure ASCII script)
-param([Parameter(Mandatory=$true)][string]$Root)
+#   -Root <folder>   the site source folder (or the repo root when it IS the publish root)
+#   -SiteOnly        only scan the published site files (index.html + css\ + js\ + assets\),
+#                    instead of walking the whole folder tree. Use this when -Root is the
+#                    repo root, so uploads\ / outputs\ / docs\ are not scanned.
+param(
+  [Parameter(Mandatory=$true)][string]$Root,
+  [switch]$SiteOnly
+)
 
 $ErrorActionPreference = 'Stop'
 $fail = 0
+
+# --- decide which files are in scope -----------------------------------------
+if ($SiteOnly) {
+  $scan = @()
+  foreach ($d in @('css','js','assets')) {
+    $p = Join-Path $Root $d
+    if (Test-Path -LiteralPath $p) { $scan += @(Get-ChildItem -LiteralPath $p -Recurse -File) }
+  }
+  $idx = Join-Path $Root 'index.html'
+  if (Test-Path -LiteralPath $idx) { $scan += @(Get-Item -LiteralPath $idx) }
+  Write-Output "scope: site files only ($($scan.Count) files)"
+} else {
+  $scan = @(Get-ChildItem -LiteralPath $Root -Recurse -File)
+  Write-Output "scope: all files under Root ($($scan.Count) files)"
+}
+Write-Output ""
 
 function Strip-Comments($t) {
   $t = [regex]::Replace($t, '/\*.*?\*/', ' ', 'Singleline')
@@ -63,8 +86,7 @@ if (-not ($iCfg -gt 0 -and $iFb -gt $iCfg)) { Say "  FAIL order"; $fail++ } else
 Say ""
 Say "===== 6) 外部链接扫描（HTML/CSS/JS） ====="
 $ext = @()
-foreach ($f in (Get-ChildItem -LiteralPath $Root -Recurse -File |
-                Where-Object { $_.Extension -in '.html','.css','.js' })) {
+foreach ($f in ($scan | Where-Object { $_.Extension -in '.html','.css','.js' })) {
   $t = [System.IO.File]::ReadAllText($f.FullName, [System.Text.Encoding]::UTF8)
   if ($f.Extension -ne '.html') { $t = Strip-Comments $t }
   foreach ($m in [regex]::Matches($t, 'https?://[^\s"''<>)]+')) {
@@ -77,8 +99,7 @@ else { $ext | Sort-Object -Unique | ForEach-Object { Say "  ext $_" } }
 
 Say ""
 Say "===== 7) 文件编码 / BOM ====="
-foreach ($f in (Get-ChildItem -LiteralPath $Root -Recurse -File |
-                Where-Object { $_.Extension -in '.html','.css','.js','.md','.txt' })) {
+foreach ($f in ($scan | Where-Object { $_.Extension -in '.html','.css','.js','.md','.txt' })) {
   $bytes = [System.IO.File]::ReadAllBytes($f.FullName)
   $bom = ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF)
   Say ("  {0,-32} {1,8} bytes  bom={2}" -f $f.Name, $bytes.Length, $bom)

@@ -1,0 +1,261 @@
+/* =========================================================
+   V3.5 新增 —— 反馈入口与反馈表单样式
+   单独成文件，方便一眼看出"这一版改了什么"（原 style.css 未改动）。
+   所有图形仍为 CSS 自绘，未引入任何位图或第三方素材。
+   ========================================================= */
+
+/* ---------- 右下角入口按钮 ---------- */
+.fb-open {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 18px;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 1.1rem;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  background: var(--yellow);
+  border: 4px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 5px 5px 0 var(--ink);
+  cursor: pointer;
+  rotate: -2deg;
+  transition: rotate .14s ease, scale .14s ease,
+              box-shadow .14s ease, translate .14s ease;
+}
+.fb-open:hover  { rotate: 2deg; scale: 1.06; box-shadow: 9px 9px 0 var(--ink); }
+.fb-open:active { translate: -1px 3px; box-shadow: 2px 2px 0 var(--ink); }
+.fb-open__ico {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  animation: twinkle 3.6s ease-in-out infinite;
+}
+.fb-open__ico path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.3;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* ---------- 模态容器 ---------- */
+.fb-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+}
+.fb-modal[hidden] { display: none !important; }
+.fb-modal__veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 14, 14, .64);
+}
+.fb-modal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(560px, 100%);
+  max-height: min(88vh, 780px);
+  overflow-y: auto;
+  padding: 26px 24px 24px;
+  background: var(--paper);
+  border: 5px solid var(--ink);
+  border-radius: 12px;
+  box-shadow: 12px 12px 0 rgba(0, 0, 0, .5);
+  animation: fbPop .26s cubic-bezier(.2, .9, .3, 1.3) both;
+}
+.fb-modal__panel:focus { outline: none; }
+/* 面板左上角的星星贴纸（延续分区标题的贴纸语言） */
+.fb-modal__panel::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 58px;
+  height: 58px;
+  background: var(--yellow);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%,
+                     79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  opacity: .5;
+  rotate: -12deg;
+  pointer-events: none;
+}
+.fb-modal__x {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  font-size: 1.3rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--ink);
+  background: #fff;
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  box-shadow: 3px 3px 0 var(--ink);
+  cursor: pointer;
+  transition: rotate .14s ease, scale .14s ease;
+}
+.fb-modal__x:hover { rotate: 90deg; scale: 1.08; background: var(--pink); color: #fff; }
+
+.fb-modal__title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(1.5rem, 5.4vw, 2.1rem);
+  line-height: 1.2;
+  letter-spacing: 1.5px;
+  color: var(--red);
+  -webkit-text-stroke: 2px var(--ink);
+  text-shadow: 3px 3px 0 var(--ink);
+  rotate: -1.4deg;
+  margin-bottom: 10px;
+}
+.fb-modal__privacy {
+  display: inline-block;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 800;
+  font-size: .78rem;
+  letter-spacing: 1px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+.fb-modal__lead {
+  font-size: .9rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 18px;
+}
+
+/* ---------- 表单字段 ---------- */
+.fb-field { margin: 0 0 16px; border: 0; }
+.fb-label {
+  display: block;
+  font-weight: 800;
+  font-size: .88rem;
+  margin-bottom: 7px;
+  padding: 0;
+}
+.fb-req {
+  display: inline-block;
+  margin-left: 5px;
+  padding: 0 5px;
+  font-size: .74rem;
+  color: var(--red);
+  border: 2px solid var(--red);
+  border-radius: 4px;
+}
+.fb-input {
+  width: 100%;
+  font-family: var(--font);
+  font-size: .95rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background: #fff;
+  border: 3px solid var(--ink);
+  border-radius: 8px;
+  padding: 11px 13px;
+}
+.fb-input::placeholder { color: #8A8578; }
+.fb-input--area { min-height: 106px; resize: vertical; }
+
+/* 选项做成"贴纸胶囊"，和站内 chip 语言一致 */
+.fb-chips { display: flex; flex-wrap: wrap; gap: 9px; }
+.fb-chip { position: relative; display: inline-flex; cursor: pointer; }
+.fb-chip input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.fb-chip span {
+  display: inline-block;
+  padding: 6px 14px;
+  font-weight: 700;
+  font-size: .85rem;
+  background: #fff;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: background-color .16s ease, color .16s ease,
+              rotate .16s ease, scale .16s ease;
+}
+.fb-chip:hover span { rotate: -3deg; scale: 1.05; }
+.fb-chip input:checked + span { background: var(--blue); color: #fff; }
+.fb-chip input:focus-visible + span { outline: 4px dashed var(--yellow); outline-offset: 3px; }
+
+/* ---------- 提示条 + 状态 + 按钮 ---------- */
+.fb-note {
+  margin: 0 0 14px;
+  padding: 9px 13px;
+  font-size: .85rem;
+  font-weight: 700;
+  color: #6B4A00;
+  background: #FFF3C4;
+  border: 3px dashed var(--ink);
+  border-radius: 8px;
+}
+.fb-note[hidden] { display: none !important; }
+.fb-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+.fb-status { font-size: .86rem; font-weight: 700; }
+.fb-status[data-kind="ok"]  { color: #0B6B3A; }
+.fb-status[data-kind="err"] { color: var(--red); }
+.fb-status[data-kind="tip"] { color: #5A5A5A; }
+.btn[disabled] {
+  opacity: .58;
+  cursor: not-allowed;
+  transform: none;
+  animation: none;
+}
+
+/* ---------- 打开对话框时锁住背景滚动 ---------- */
+body.fb-locked { overflow: hidden; }
+
+@keyframes fbPop {
+  from { opacity: 0; scale: .9; translate: 0 16px; }
+  to   { opacity: 1; scale: 1;  translate: 0 0; }
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 620px) {
+  .fb-open {
+    right: 12px;
+    bottom: 12px;
+    padding: 10px 14px;
+    font-size: .98rem;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .fb-open__ico { width: 18px; height: 18px; }
+  /* 给入口按钮腾出位置，避免压住页脚导航 */
+  .site-footer { padding-bottom: 96px; }
+  .fb-modal { padding: 12px; align-items: flex-end; }
+  .fb-modal__panel { max-height: 90vh; padding: 22px 16px 18px; }
+  .fb-actions .btn { flex: 1; }
+}
+
+/* 减少动态：入口图标不再闪动，弹出动画由全局规则关闭 */
+@media (prefers-reduced-motion: reduce) {
+  .fb-open__ico { animation: none; }
+}
