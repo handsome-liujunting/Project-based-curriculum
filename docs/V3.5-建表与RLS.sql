@@ -42,16 +42,24 @@ create table if not exists public.feedback (
 alter table public.feedback enable row level security;
 
 -- 默认情况下：RLS 打开后没有任何策略 = 谁都读不到、也写不进。
--- 下面只开"插入"这一扇门，且只对匿名访客（anon）开放。
+-- 下面只开"插入"这一扇门。
+--
+-- 为什么是 anon + authenticated（对应课件「角色 × 权限对照」那一页）：
+--   · anon（publishable key，未登录访客）→ 允许提交    ← 本站访客全部属于这一类
+--   · authenticated（已登录用户）        → 也允许提交
+--   · 两者都**不能**读取/修改/删除 → 因为下面只有 INSERT 策略，
+--     没有 select / update / delete 策略，而 RLS 的默认就是拒绝。
+--     这就是课件说的"按策略决定"：不去关 RLS、也不放开全部权限。
 drop policy if exists feedback_anon_insert on public.feedback;
 create policy feedback_anon_insert
   on public.feedback
   for insert
-  to anon
+  to anon, authenticated
   with check (true);
 
 -- 注意：这里**没有** select / update / delete 策略。
---       所以匿名访客只能提交，无法读取别人的反馈 → 满足"反馈不会公开"。
+--       所以访客只能提交，无法读取别人的反馈 → 满足"反馈不会公开"。
+--       红线：不要为了"消掉报错"而关闭 RLS，也不要加 using (true) 的读策略。
 
 
 -- ---------------------------------------------------------------------------
@@ -63,6 +71,12 @@ revoke select, update, delete on table public.feedback from anon;
 
 -- identity 主键要取一次序列的下一个值，因此需要序列的使用权
 grant usage on sequence public.feedback_id_seq to anon;
+
+-- 已登录用户同样只给 insert（对应上面的 anon + authenticated 策略）
+grant usage on schema public to authenticated;
+grant insert on table public.feedback to authenticated;
+revoke select, update, delete on table public.feedback from authenticated;
+grant usage on sequence public.feedback_id_seq to authenticated;
 
 
 -- ---------------------------------------------------------------------------
@@ -79,7 +93,7 @@ create index if not exists feedback_created_at_idx
 -- 5.1 确认表已建好、RLS 已打开（relrowsecurity 应为 true）
 -- select relname, relrowsecurity from pg_class where relname = 'feedback';
 
--- 5.2 确认只有一条策略，且 cmd = INSERT、roles = {anon}
+-- 5.2 确认只有一条策略，且 cmd = INSERT、roles = {anon,authenticated}
 -- select policyname, cmd, roles, with_check from pg_policies where tablename = 'feedback';
 
 -- 5.3 看最近的反馈（按时间倒序）
@@ -108,6 +122,6 @@ create index if not exists feedback_created_at_idx
 -- ---------------------------------------------------------------------------
 -- 7) 交付前的一句话总结（可直接写进作业说明）
 -- ---------------------------------------------------------------------------
--- feedback 表开启 RLS，仅授予 anon 角色 INSERT 权限，前端使用 publishable key
--- 直连 PostgREST 插入；数据库中不存在任何面向匿名访客的读取路径，
--- 因此访客提交的反馈除站点作者外无人可见。
+-- feedback 表开启 RLS，仅授予 anon / authenticated 两个角色 INSERT 权限，
+-- 前端使用 publishable key 直连 PostgREST 插入；数据库中不存在任何面向
+-- 访客的读取路径，因此访客提交的反馈除站点作者外无人可见。
