@@ -57,6 +57,7 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
     <a href="#story">故事</a>
     <a href="#skills">技能</a>
     <a href="#works">作品</a>
+    <a href="#twin">分身</a>
     <a href="#contact">联系</a>
   </nav>
   <!-- 阅读进度条 -->
@@ -232,18 +233,6 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
         <p class="panel__text">这里之后放我随手写的小实验。</p>
       </article>
       <article class="panel panel--work reveal">
-        <span class="panel__tag">可对话</span>
-        <h3 class="panel__title">数字分身</h3>
-        <p class="panel__text">留了个影子在这儿，他可以替我回答一些常规问题。</p>
-        <button class="dt-open" id="dtOpen" type="button">
-          <svg class="dt-open__ico" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 5h11a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H8l-4 3z" />
-            <path d="M19 9h1a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-1v3l-3-2" />
-          </svg>
-          找他聊两句
-        </button>
-      </article>
-      <article class="panel panel--work reveal">
         <span class="panel__tag panel__tag--muted">待补充</span>
         <h3 class="panel__title">更多作品</h3>
         <p class="panel__text">敬请期待。</p>
@@ -251,7 +240,30 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
     </div>
   </section>
 
-  <!-- ================= 04 联系 ================= -->
+  <!-- ================= 04 数字分身 ================= -->
+  <section class="section section--pink" id="twin">
+    <span class="rail" aria-hidden="true"><i class="rail__track"><b class="rail__fill"></b></i><b class="rail__dot"></b></span>
+    <h2 class="h-title reveal">数字分身</h2>
+    <p class="section__lead reveal">留了个影子在这儿，他可以替我回答一些常规问题。</p>
+    <div class="rule" aria-hidden="true"></div>
+
+    <div class="twin reveal">
+      <div class="twin__face" aria-hidden="true">🌙</div>
+      <div class="twin__body">
+        <p class="twin__meta">INFJ · 没谈过恋爱 · 爱读近代史</p>
+        <p class="twin__text">他比我本人愿意说话一点，不过也只肯说到这儿。你想问的，多半在这几句里。</p>
+        <button class="dt-open" id="dtOpen" type="button">
+          <svg class="dt-open__ico" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 5h11a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H8l-4 3z" />
+            <path d="M19 9h1a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-1v3l-3-2" />
+          </svg>
+          找他聊两句
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 05 联系 ================= -->
   <section class="section section--red" id="contact">
     <span class="rail" aria-hidden="true"><i class="rail__track"><b class="rail__fill"></b></i><b class="rail__dot"></b></span>
     <h2 class="h-title h-title--big reveal">每个主角<br />都有自己的开场白</h2>
@@ -286,6 +298,7 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
     <a href="#story">故事</a>
     <a href="#skills">技能</a>
     <a href="#works">作品</a>
+    <a href="#twin">分身</a>
     <a href="#contact">联系</a>
   </nav>
 </footer>

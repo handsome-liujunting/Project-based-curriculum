@@ -5,7 +5,51 @@
    所有图形仍为 CSS 自绘，无位图、无第三方素材、无网络请求。
    ========================================================= */
 
-/* ---------- 作品卡片里的入口按钮 ---------- */
+/* ---------- 数字分身专区里的卡片（原"我的台词"的位置，粉色区） ---------- */
+.twin {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  max-width: 720px;
+  padding: 22px 24px;
+  background: var(--paper);
+  border: 5px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 8px 8px 0 var(--ink);
+}
+.twin__face {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  flex: none;
+  font-size: 2.6rem;
+  background: var(--sky-1);
+  border: 5px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 4px 4px 0 var(--ink);
+  animation: dtBob 4.2s ease-in-out infinite;
+}
+.twin__body { min-width: 0; }
+.twin__meta {
+  display: inline-block;
+  margin: 0 0 10px;
+  padding: 5px 13px;
+  font-family: var(--display);
+  font-size: .84rem;
+  letter-spacing: 1px;
+  color: var(--paper);
+  background: var(--blue-d);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+}
+.twin__text {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.75;
+}
+
+/* ---------- 专区里的入口按钮 ---------- */
 .dt-open {
   display: inline-flex;
   align-items: center;
@@ -255,6 +299,9 @@ body.dt-locked { overflow: hidden; }
 @media (max-width: 720px) {
   .dt-modal { padding: 12px; }
   .dt-modal__panel { max-height: 92vh; }
+  .twin { flex-direction: column; align-items: flex-start; gap: 16px; padding: 18px 18px 20px; }
+  .twin__face { width: 74px; height: 74px; font-size: 2.05rem; }
+  .twin__text { font-size: .98rem; }
   .dt-head { padding: 13px 14px; }
   .dt-head__title { font-size: 1.2rem; }
   .dt-head__meta { font-size: .76rem; }
@@ -270,5 +317,6 @@ body.dt-locked { overflow: hidden; }
   .dt-open, .dt-close, .dt-pick { transition: none; }
   .dt-modal__panel { animation: none; }
   .dt-msg--twin .dt-msg__face { animation: none; }
+  .twin__face { animation: none; }
   .dt-typing i { animation: none; opacity: .6; }
 }
