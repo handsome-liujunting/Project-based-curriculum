@@ -3,8 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!-- 只有 JS 可用时才启用"滚动淡入"的初始隐藏，避免脚本失效导致内容不可见 -->
-<script>document.documentElement.classList.add("js");</script>
+<!-- 只有 JS 可用时才启用"滚动淡入"的初始隐藏，避免脚本失效导致内容不可见。
+     双保险：若 2 秒内 main.js 没能接管（被拦截 / 加载失败 / 报错），
+     自动摘掉 .js 标记，让全部内容直接可见，绝不出现"白屏看不到字"。 -->
+<script>document.documentElement.classList.add("js");
+setTimeout(function () { if (!window.__revealReady) { document.documentElement.classList.remove("js"); } }, 2000);</script>
 <title>刘俊廷 · 个人主页</title>
 <meta name="description" content="刘俊廷的个人主页 —— 计算机科学与技术专业，文史哲爱好者，也爱唱跳 rap 篮球。" />
 <meta name="theme-color" content="#2E7DE0" />

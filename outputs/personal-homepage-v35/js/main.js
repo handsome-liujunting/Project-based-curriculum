@@ -37,6 +37,22 @@
     });
   }
 
+  // 告诉 <head> 里的内联保险："淡入逻辑已经接管，不必摘掉 .js 标记"
+  window.__revealReady = true;
+
+  /* 兜底：万一观察器没有回调（例如页面在后台标签里加载、渲染被节流），
+     1.5 秒后把"本该在视口里的"元素直接显示出来，确保永远看得到字。 */
+  window.setTimeout(function () {
+    Array.prototype.forEach.call(
+      document.querySelectorAll(".reveal:not(.is-visible)"),
+      function (el) {
+        var r = el.getBoundingClientRect();
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        if (r.top < vh && r.bottom > 0) el.classList.add("is-visible");
+      }
+    );
+  }, 1500);
+
   /* ---------- 2. 阅读进度条 + 分区进度轨 + 滚动联动（装饰跟着滚） ---------- */
   var bar = document.getElementById("progressBar");
   var rails = document.querySelectorAll(".section > .rail");
