@@ -67,9 +67,13 @@
   var modal   = document.getElementById("dtModal");
   var openBtn = document.getElementById("dtOpen");
   var logEl   = document.getElementById("dtLog");
-  var picksEl = document.getElementById("dtPicks");
   var rowEl   = document.getElementById("dtPicksRow");
   var labelEl = document.getElementById("dtPicksLabel");
+  // 兜底写法：早先这里只找 id="dtPicks"，而 HTML 上只有 class="dt-picks"，
+  // picksEl 为 null 会让下面整个脚本 return —— 按钮、问答、深链全部失效，
+  // 而且不报错、看不出问题。两种写法都认，并加校验防回归（tools/verify_v35.ps1）。
+  var picksEl = document.getElementById("dtPicks") ||
+                (modal && modal.querySelector(".dt-picks"));
 
   if (!modal || !openBtn || !logEl || !picksEl || !rowEl) return;
 

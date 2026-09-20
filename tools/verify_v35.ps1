@@ -124,5 +124,34 @@ if ($cfgCode -match 'SUPABASE_SERVICE') { $bad += 'service env name in CODE' }
 if ($bad) { $bad | ForEach-Object { Say "  WARN $_"; $script:fail++ } } else { Say "  ok  no key material / service_role in config code" }
 
 Say ""
+Say "===== 9) JS <-> HTML contract (ids and data- attributes) ====="
+# Why this exists: js/digital-twin.js asked for getElementById("dtPicks") while the
+# HTML only had class="dt-picks". The value came back null, the guard at the top of
+# the script returned silently, and the whole twin feature (button, Q&A, deep link)
+# was dead -- with no error anywhere and with the id-count check still green.
+# So: match every id / data- attribute a script asks for against index.html.
+$htmlIdList = [regex]::Matches($html, '\sid="([^"]+)"') | ForEach-Object { $_.Groups[1].Value }
+$jsDir = Join-Path $Root 'js'
+$jsFiles = @()
+if (Test-Path -LiteralPath $jsDir) { $jsFiles = @(Get-ChildItem -LiteralPath $jsDir -Filter *.js -File) }
+$contractChecked = 0
+foreach ($jsFile in $jsFiles) {
+  $jsCode = Strip-Comments ([System.IO.File]::ReadAllText($jsFile.FullName, [System.Text.Encoding]::UTF8))
+  foreach ($m in [regex]::Matches($jsCode, 'getElementById\(\s*[''"]([^''"]+)[''"]\s*\)')) {
+    $contractChecked++
+    $id = $m.Groups[1].Value
+    if ($htmlIdList -contains $id) { Say "  ok   $($jsFile.Name)  #$id" }
+    else { Say "  MISS $($jsFile.Name)  #$id  (no such id in index.html)"; $fail++ }
+  }
+  foreach ($m in [regex]::Matches($jsCode, 'querySelectorAll?\(\s*[''"]\[([a-zA-Z][a-zA-Z0-9-]*)\]')) {
+    $contractChecked++
+    $attr = $m.Groups[1].Value
+    if ($html -match ("\s" + [regex]::Escape($attr) + "(\s|=|>)")) { Say "  ok   $($jsFile.Name)  [$attr]" }
+    else { Say "  MISS $($jsFile.Name)  [$attr]  (attribute never used in index.html)"; $fail++ }
+  }
+}
+if ($contractChecked -eq 0) { Say "  WARN no getElementById/attribute selector found to check" }
+
+Say ""
 Say "===== 汇总 ====="
 Say "  FAIL count = $fail"
