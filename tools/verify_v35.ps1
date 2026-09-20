@@ -48,13 +48,21 @@ foreach ($r in ($refs | Sort-Object -Unique)) {
 
 Say ""
 Say "===== 2) 样式/脚本文件是否都被引用 ====="
-foreach ($rel in @('css\style.css','css\feedback.css','js\main.js','js\feedback.js','js\feedback-config.js')) {
-  $name = Split-Path $rel -Leaf
-  if (Test-Path -LiteralPath (Join-Path $Root $rel)) {
-    $used = $html -match [regex]::Escape($name)
-    Say ("  {0}  referenced={1}" -f $rel, $used)
-    if (-not $used) { $fail++ }
-  } else { Say "  MISS $rel"; $fail++ }
+# 自动发现 css\ 与 js\ 下的所有文件（不再写死清单），
+# 这样以后新增文件如果忘了在 HTML 里引用，这里会直接 FAIL。
+$assets = @()
+foreach ($sub in @('css','js')) {
+  $d = Join-Path $Root $sub
+  if (Test-Path -LiteralPath $d) {
+    $assets += @(Get-ChildItem -LiteralPath $d -Recurse -File |
+                 Where-Object { $_.Extension -in '.css','.js' })
+  }
+}
+if ($assets.Count -eq 0) { Say "  MISS no css/js file found under Root"; $fail++ }
+foreach ($f in ($assets | Sort-Object FullName)) {
+  $used = $html -match [regex]::Escape($f.Name)
+  Say ("  {0}  referenced={1}" -f $f.FullName.Substring((Resolve-Path $Root).Path.Length).TrimStart('\'), $used)
+  if (-not $used) { $fail++ }
 }
 
 Say ""

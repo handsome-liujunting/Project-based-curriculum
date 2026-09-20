@@ -15,20 +15,45 @@ function B64([string]$p) {
 }
 
 $html = Read-Utf8 (Join-Path $src 'index.html')
-$css  = Read-Utf8 (Join-Path $src 'css\style.css')
-$css2 = Read-Utf8 (Join-Path $src 'css\feedback.css')
-$js   = Read-Utf8 (Join-Path $src 'js\main.js')
-$js2  = Read-Utf8 (Join-Path $src 'js\feedback-config.js')
-$js3  = Read-Utf8 (Join-Path $src 'js\feedback.js')
 
-# --- fonts -> base64 data URIs ---
-$b1 = B64 (Join-Path $src 'assets\fonts\bangers-latin.woff2')
-$b2 = B64 (Join-Path $src 'assets\fonts\zcool-kuaile-subset.woff2')
-$css = $css.Replace('url("../assets/fonts/bangers-latin.woff2")', 'url("data:font/woff2;base64,' + $b1 + '")')
-$css = $css.Replace('url("../assets/fonts/zcool-kuaile-subset.woff2")', 'url("data:font/woff2;base64,' + $b2 + '")')
-if ($css.Contains('assets/fonts/bangers-latin.woff2')) { throw 'bangers path not inlined' }
-if ($css.Contains('assets/fonts/zcool-kuaile-subset.woff2')) { throw 'zcool path not inlined' }
-if ($css2 -match 'url\(') { throw 'feedback.css unexpectedly references assets' }
+# --- inline every stylesheet / script that index.html references --------------
+# 自动发现，不再写死文件清单：以后新增 css/js 文件不需要改这个脚本。
+# （曾经因为写死清单，新增 digital-twin.css/js 时漏内联，被下面的保险检查拦住）
+$fontDir = Join-Path $src 'assets\fonts'
+$woff2 = @()
+if (Test-Path -LiteralPath $fontDir) {
+  $woff2 = @(Get-ChildItem -LiteralPath $fontDir -File -Filter '*.woff2')
+}
+
+$styleRefs = [regex]::Matches($html, '<link rel="stylesheet" href="(css/[^"]+)"\s*/?>')
+if ($styleRefs.Count -eq 0) { throw 'no stylesheet reference found in index.html' }
+foreach ($m in $styleRefs) {
+  $rel = $m.Groups[1].Value
+  $p = Join-Path $src ($rel -replace '/', '\')
+  if (-not (Test-Path -LiteralPath $p)) { throw ('stylesheet not found: ' + $rel) }
+  $code = Read-Utf8 $p
+  foreach ($f in $woff2) {
+    $u = '../assets/fonts/' + $f.Name
+    if ($code.Contains($u)) {
+      $code = $code.Replace('url("' + $u + '")', 'url("data:font/woff2;base64,' + (B64 $f.FullName) + '")')
+    }
+  }
+  if ($code -match 'url\(["'']?\.\./assets/fonts/') { throw ('font not inlined in ' + $rel) }
+  $html = $html.Replace($m.Value, '<style>' + "`n" + $code + "`n" + '</style>')
+}
+"inlined css : $($styleRefs.Count)"
+
+$scriptRefs = [regex]::Matches($html, '<script src="(js/[^"]+)"></script>')
+if ($scriptRefs.Count -eq 0) { throw 'no script reference found in index.html' }
+foreach ($m in $scriptRefs) {
+  $rel = $m.Groups[1].Value
+  $p = Join-Path $src ($rel -replace '/', '\')
+  if (-not (Test-Path -LiteralPath $p)) { throw ('script not found: ' + $rel) }
+  $code = Read-Utf8 $p
+  if ($code -match '</script') { throw ('script contains </script, cannot embed: ' + $rel) }
+  $html = $html.Replace($m.Value, '<script>' + "`n" + $code + "`n" + '</script>')
+}
+"inlined js  : $($scriptRefs.Count)"
 
 # --- license texts ---
 $l1 = Read-Utf8 (Join-Path $src 'assets\fonts\OFL-Bangers.txt')
@@ -36,24 +61,9 @@ $l2 = Read-Utf8 (Join-Path $src 'assets\fonts\OFL-ZCOOL-KuaiLe.txt')
 foreach ($l in @($l1, $l2)) {
   if ($l -match '</script') { throw 'license text contains </script, cannot embed inline' }
 }
-foreach ($j in @($js, $js2, $js3)) {
-  if ($j -match '</script') { throw 'script contains </script, cannot embed inline' }
-}
 
-# --- strip preload links, inline css/js ---
+# --- strip preload links (fonts are already inlined as base64) ---
 $html = [regex]::Replace($html, '<link rel="preload"[^>]*>\s*', '')
-
-$pairs = @(
-  ,@('<link rel="stylesheet" href="css/style.css" />',    ('<style>' + "`n" + $css + "`n" + '</style>'))
-  ,@('<link rel="stylesheet" href="css/feedback.css" />', ('<style>' + "`n" + $css2 + "`n" + '</style>'))
-  ,@('<script src="js/main.js"></script>',                ('<script>' + "`n" + $js + "`n" + '</script>'))
-  ,@('<script src="js/feedback-config.js"></script>',     ('<script>' + "`n" + $js2 + "`n" + '</script>'))
-  ,@('<script src="js/feedback.js"></script>',            ('<script>' + "`n" + $js3 + "`n" + '</script>'))
-)
-foreach ($p in $pairs) {
-  if (-not $html.Contains($p[0])) { throw ('tag not found: ' + $p[0]) }
-  $html = $html.Replace($p[0], $p[1])
-}
 
 # --- embed license texts before </body> ---
 $embed = '<script type="text/plain" id="of-license-bangers">' + "`n" + $l1 + "`n" + '</script>' + "`n" +

@@ -44,6 +44,8 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
   <link rel="stylesheet" href="css/style.css" />
   <!-- V3.5 新增样式（独立文件，v3 的 style.css 保持原样） -->
   <link rel="stylesheet" href="css/feedback.css" />
+  <!-- 数字分身样式（独立文件，同样不改动 style.css） -->
+  <link rel="stylesheet" href="css/digital-twin.css" />
 </head>
 <body>
 <a class="skip" href="#main">跳到主要内容</a>
@@ -230,9 +232,16 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
         <p class="panel__text">这里之后放我随手写的小实验。</p>
       </article>
       <article class="panel panel--work reveal">
-        <span class="panel__tag">原型</span>
+        <span class="panel__tag">可对话</span>
         <h3 class="panel__title">数字分身</h3>
-        <p class="panel__text">对话入口的静态原型。</p>
+        <p class="panel__text">留了个影子在这儿，他可以替我回答一些常规问题。</p>
+        <button class="dt-open" id="dtOpen" type="button">
+          <svg class="dt-open__ico" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 5h11a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H8l-4 3z" />
+            <path d="M19 9h1a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-1v3l-3-2" />
+          </svg>
+          找他聊两句
+        </button>
       </article>
       <article class="panel panel--work reveal">
         <span class="panel__tag panel__tag--muted">待补充</span>
@@ -280,6 +289,31 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
     <a href="#contact">联系</a>
   </nav>
 </footer>
+
+<!-- ================= 数字分身：预设问答对话框 =================
+     纯前端实现，打开它不会产生任何网络请求。
+     分身的全部台词写在 js/digital-twin.js 顶部的 TWIN 对象里。 -->
+<div class="dt-modal" id="dtModal" hidden>
+  <div class="dt-modal__veil" data-dt-close></div>
+  <div class="dt-modal__panel" role="dialog" aria-modal="true" tabindex="-1"
+       aria-labelledby="dtTitle">
+    <div class="dt-head">
+      <span class="dt-head__face" aria-hidden="true">🌙</span>
+      <div class="dt-head__text">
+        <h2 class="dt-head__title" id="dtTitle">数字分身</h2>
+        <p class="dt-head__meta">INFJ · 没谈过恋爱 · 爱读近代史</p>
+      </div>
+      <button class="dt-close" type="button" data-dt-close aria-label="关闭数字分身">×</button>
+    </div>
+
+    <div class="dt-log" id="dtLog" role="log" aria-live="polite" aria-label="与数字分身的对话"></div>
+
+    <div class="dt-picks">
+      <p class="dt-picks__label" id="dtPicksLabel">你可以问他：</p>
+      <div class="dt-picks__row" id="dtPicksRow"></div>
+    </div>
+  </div>
+</div>
 
 <!-- ================= 反馈入口（V3.5 新增） ================= -->
 <button class="fb-open" id="fbOpen" type="button">
@@ -355,5 +389,6 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
 <script src="js/main.js"></script>
 <script src="js/feedback-config.js"></script>
 <script src="js/feedback.js"></script>
+<script src="js/digital-twin.js"></script>
 </body>
 </html>

@@ -1,0 +1,274 @@
+/* =========================================================
+   数字分身 —— 预设问答对话框样式
+   单独成文件，与 feedback.css 同一种做法：
+   原 style.css 一行未改，这一版新增了什么一眼可见。
+   所有图形仍为 CSS 自绘，无位图、无第三方素材、无网络请求。
+   ========================================================= */
+
+/* ---------- 作品卡片里的入口按钮 ---------- */
+.dt-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 9px 16px;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 1.5px;
+  color: var(--paper);
+  background: var(--blue-d);
+  border: 4px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 4px 4px 0 var(--ink);
+  cursor: pointer;
+  rotate: -1.5deg;
+  transition: rotate .14s ease, scale .14s ease,
+              box-shadow .14s ease, translate .14s ease;
+}
+.dt-open:hover  { rotate: 1.5deg; scale: 1.05; box-shadow: 7px 7px 0 var(--ink); }
+.dt-open:active { translate: -1px 3px; box-shadow: 2px 2px 0 var(--ink); }
+.dt-open__ico {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+.dt-open__ico path {
+  fill: none;
+  stroke: var(--paper);
+  stroke-width: 2.3;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* ---------- 模态容器（与反馈模态同一套交互约定） ---------- */
+.dt-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 160;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+}
+.dt-modal[hidden] { display: none !important; }
+.dt-modal__veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 14, 14, .64);
+}
+.dt-modal__panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(620px, 100%);
+  max-height: min(88vh, 760px);
+  padding: 0;
+  background: var(--paper);
+  border: 5px solid var(--ink);
+  border-radius: 12px;
+  box-shadow: 12px 12px 0 rgba(0, 0, 0, .5);
+  animation: dtPop .26s cubic-bezier(.2, .9, .3, 1.3) both;
+}
+.dt-modal__panel:focus { outline: none; }
+
+/* ---------- 头部 ---------- */
+.dt-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  background: var(--blue-d);
+  border-bottom: 5px solid var(--ink);
+  border-radius: 7px 7px 0 0;
+}
+.dt-head__face {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  flex: none;
+  font-size: 1.5rem;
+  background: var(--sky-1);
+  border: 4px solid var(--ink);
+  border-radius: 999px;
+}
+.dt-head__text { min-width: 0; }
+.dt-head__title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1.45rem;
+  letter-spacing: 1.5px;
+  color: var(--paper);
+}
+.dt-head__meta {
+  margin: 2px 0 0;
+  font-size: .82rem;
+  letter-spacing: .5px;
+  color: var(--sky-1);
+}
+.dt-close {
+  margin-left: auto;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  font-family: var(--display);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ink);
+  background: var(--yellow);
+  border: 4px solid var(--ink);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: rotate .14s ease, scale .14s ease;
+}
+.dt-close:hover { rotate: 90deg; scale: 1.08; }
+
+/* ---------- 对话记录 ---------- */
+.dt-log {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 18px 18px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.dt-msg {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  max-width: 88%;
+}
+.dt-msg--me { flex-direction: row-reverse; margin-left: auto; }
+.dt-msg__face {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  font-size: 1.05rem;
+  background: var(--sky-1);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+}
+.dt-msg__body {
+  padding: 11px 15px;
+  font-size: .98rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background: #fff;
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  white-space: pre-wrap;
+}
+.dt-msg--twin .dt-msg__body { border-bottom-left-radius: 3px; }
+.dt-msg--me .dt-msg__body {
+  color: var(--paper);
+  background: var(--blue-2, #2E7DE0);
+  border-bottom-right-radius: 3px;
+}
+.dt-msg--twin .dt-msg__face {
+  animation: dtBob 3.4s ease-in-out infinite;
+}
+
+/* ---------- 分身"正在想" ---------- */
+.dt-typing .dt-msg__body {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 20px;
+}
+.dt-typing i {
+  width: 7px;
+  height: 7px;
+  background: var(--ink);
+  border-radius: 999px;
+  opacity: .35;
+  animation: dtDots 1.1s ease-in-out infinite;
+}
+.dt-typing i:nth-child(2) { animation-delay: .18s; }
+.dt-typing i:nth-child(3) { animation-delay: .36s; }
+
+/* ---------- 话题选择区 ---------- */
+.dt-picks {
+  flex: none;
+  padding: 12px 18px 18px;
+  border-top: 3px dashed rgba(14, 14, 14, .25);
+}
+.dt-picks__label {
+  margin: 0 0 9px;
+  font-size: .82rem;
+  letter-spacing: .5px;
+  color: rgba(14, 14, 14, .62);
+}
+.dt-picks__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.dt-pick {
+  padding: 8px 14px;
+  font-size: .9rem;
+  color: var(--ink);
+  background: var(--yellow);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--ink);
+  cursor: pointer;
+  transition: translate .12s ease, box-shadow .12s ease;
+}
+.dt-pick:hover  { translate: -1px -2px; box-shadow: 5px 5px 0 var(--ink); }
+.dt-pick:active { translate: 1px 1px; box-shadow: 2px 2px 0 var(--ink); }
+.dt-pick:disabled { opacity: .45; cursor: default; box-shadow: 2px 2px 0 var(--ink); }
+.dt-pick--ghost {
+  background: var(--paper);
+  color: var(--blue-d);
+}
+
+/* ---------- 焦点可见性（键盘用户） ---------- */
+.dt-open:focus-visible,
+.dt-close:focus-visible,
+.dt-pick:focus-visible {
+  outline: 3px solid var(--sky-2, #3D86D8);
+  outline-offset: 3px;
+}
+
+/* ---------- 关闭对话框时锁住背景滚动 ---------- */
+body.dt-locked { overflow: hidden; }
+
+/* ---------- 动效 ---------- */
+@keyframes dtPop {
+  from { opacity: 0; translate: 0 14px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+@keyframes dtBob {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -3px; }
+}
+@keyframes dtDots {
+  0%, 100% { opacity: .25; translate: 0 0; }
+  50%      { opacity: 1;   translate: 0 -3px; }
+}
+
+/* ---------- 窄屏 ---------- */
+@media (max-width: 720px) {
+  .dt-modal { padding: 12px; }
+  .dt-modal__panel { max-height: 92vh; }
+  .dt-head { padding: 13px 14px; }
+  .dt-head__title { font-size: 1.2rem; }
+  .dt-head__meta { font-size: .76rem; }
+  .dt-log { padding: 14px 14px 4px; }
+  .dt-msg { max-width: 94%; }
+  .dt-msg__body { font-size: .94rem; }
+  .dt-picks { padding: 10px 14px 14px; }
+  .dt-close { width: 34px; height: 34px; font-size: 1.3rem; }
+}
+
+/* ---------- 尊重"减少动效"偏好 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .dt-open, .dt-close, .dt-pick { transition: none; }
+  .dt-modal__panel { animation: none; }
+  .dt-msg--twin .dt-msg__face { animation: none; }
+  .dt-typing i { animation: none; opacity: .6; }
+}

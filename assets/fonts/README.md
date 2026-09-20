@@ -9,8 +9,8 @@
 
 | 文件 | 用途 | 来源 | 当前大小 | 授权 |
 |---|---|---|---|---|
-| `bangers-latin.woff2` | 拉丁字母 / 数字的漫画展示字体（57 个字形） | Google Fonts `Bangers` | 9 496 B | SIL OFL 1.1（`OFL-Bangers.txt`） |
-| `zcool-kuaile-subset.woff2` | 中文标题字体 · 站酷快乐体（274 个字形） | Google Fonts `ZCOOL KuaiLe` | 28 352 B | SIL OFL 1.1（`OFL-ZCOOL-KuaiLe.txt`） |
+| `bangers-latin.woff2` | 拉丁字母 / 数字的漫画展示字体（59 个字形） | Google Fonts `Bangers` | 9 600 B | SIL OFL 1.1（`OFL-Bangers.txt`） |
+| `zcool-kuaile-subset.woff2` | 中文标题字体 · 站酷快乐体（281 个字形） | Google Fonts `ZCOOL KuaiLe` | 29 128 B | SIL OFL 1.1（`OFL-ZCOOL-KuaiLe.txt`） |
 | `OFL-Bangers.txt` | 授权全文（随字体分发） | — | 4 479 B | — |
 | `OFL-ZCOOL-KuaiLe.txt` | 授权全文（随字体分发） | — | 4 398 B | — |
 
@@ -25,8 +25,8 @@
 ## 为什么要子集化
 
 中文字体动辄 5–10 MB，无法直接用于静态页。这里使用 Google Fonts 的
-`text=` 接口，仅请求**页面实际用到的 274 个字形**，产物仅 28 KB；
-拉丁字体同理，只取 57 个字符。
+`text=` 接口，仅请求**页面实际用到的 281 个字形**，产物仅 29 KB；
+拉丁字体同理，只取 59 个字符。
 
 **副作用（重要）**：子集是静态的 —— 如果之后在页面上**新增了汉字，必须重新生成**，
 否则新字会回退到系统字体，视觉上会明显不一致。
@@ -63,9 +63,15 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "tools\resubset.ps1" `
 | 第二格改文案后 | 288 | 29 952 B |
 | 台词 +3 条后 | 300 | 31 272 B |
 | 删除前三条台词后 | 293 | 30 452 B |
-| 删除整块"我的台词"后（当前） | 274 | 28 352 B |
+| 删除整块"我的台词"后 | 274 | 28 352 B |
+| 新增数字分身入口后（当前） | 281 | 29 128 B |
 
-> 若打印出来的汉字数与 **274** 相同、字节数也完全相同，说明文案没变，不用重建。
+> 若打印出来的汉字数与 **281** 相同、字节数也完全相同，说明文案没变，不用重建。
+>
+> 注意：数字分身的**对话内容**写在 `js/digital-twin.js` 里，且用的是正文系统字体
+> （像聊天记录一样，刻意不用展示字体），因此**不需要**把它们补进 `extra_display.txt`。
+> 只有"使用展示字体的文本"才必须补进去。
+
 
 ## 手工重建（不想用脚本时）
 
