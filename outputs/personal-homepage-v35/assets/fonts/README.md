@@ -2,15 +2,16 @@
 
 本目录的字体用于页面的**中文与拉丁大标题展示字体**。**已完整自托管，页面运行时零外部请求。**
 
-> 最近更新：V3.5（2026-09-20）—— 文案调整后重新生成了两份子集。
+> 最近更新：V3.5（2026-09-21）—— 加入「留言板」板块、并把数字分身标签改成「母胎solo」后
+> 重新生成子集（汉字数仍为 317，字节数随用字微调）。
 > V3 版本说明见 `outputs/personal-homepage-v3/assets/fonts/README.md`。
 
 ## 清单
 
 | 文件 | 用途 | 来源 | 当前大小 | 授权 |
 |---|---|---|---|---|
-| `bangers-latin.woff2` | 拉丁字母 / 数字的漫画展示字体（59 个字形） | Google Fonts `Bangers` | 9 600 B | SIL OFL 1.1（`OFL-Bangers.txt`） |
-| `zcool-kuaile-subset.woff2` | 中文标题字体 · 站酷快乐体（285 个字形） | Google Fonts `ZCOOL KuaiLe` | 29 452 B | SIL OFL 1.1（`OFL-ZCOOL-KuaiLe.txt`） |
+| `bangers-latin.woff2` | 拉丁字母 / 数字的漫画展示字体（61 个字形） | Google Fonts `Bangers` | 10 856 B | SIL OFL 1.1（`OFL-Bangers.txt`） |
+| `zcool-kuaile-subset.woff2` | 中文标题字体 · 站酷快乐体（317 个字形） | Google Fonts `ZCOOL KuaiLe` | 32 620 B | SIL OFL 1.1（`OFL-ZCOOL-KuaiLe.txt`） |
 
 | `OFL-Bangers.txt` | 授权全文（随字体分发） | — | 4 479 B | — |
 | `OFL-ZCOOL-KuaiLe.txt` | 授权全文（随字体分发） | — | 4 398 B | — |
@@ -26,9 +27,9 @@
 ## 为什么要子集化
 
 中文字体动辄 5–10 MB，无法直接用于静态页。这里使用 Google Fonts 的
-`text=` 接口，仅请求**页面实际用到的 285 个字形**，产物仅 29 KB；
+`text=` 接口，仅请求**页面实际用到的 317 个字形**，产物约 32 KB；
 
-拉丁字体同理，只取 59 个字符。
+拉丁字体同理，只取 61 个字符。
 
 **副作用（重要）**：子集是静态的 —— 如果之后在页面上**新增了汉字，必须重新生成**，
 否则新字会回退到系统字体，视觉上会明显不一致。
@@ -57,6 +58,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "tools\resubset.ps1" `
 ```
 
 脚本会打印 `CJK chars: N` 与 `ASCII chars: M`，以及写出后的文件字节数。
+本机访问 `fonts.googleapis.com` 经常超时，脚本已内置**镜像自动回退**
+（CSS 与字体文件都按 `fonts.googleapis.com` → `fonts.loli.net` → `fonts.font.im`
+→ `fonts.googleapis.cn` 依次重试，命中哪个会打印 `via=`），
+所以偶尔的墙内抽风不影响重建。
 对照下表可快速判断"子集是否真的跟着文案变了"：
 
 | 版本节点 | 汉字数 | zcool-kuaile-subset.woff2 |
@@ -67,9 +72,11 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "tools\resubset.ps1" `
 | 删除前三条台词后 | 293 | 30 452 B |
 | 删除整块"我的台词"后 | 274 | 28 352 B |
 | 新增数字分身入口后 | 281 | 29 128 B |
-| 数字分身改为独立专区（当前） | 285 | 29 452 B |
+| 数字分身改为独立专区 | 285 | 29 452 B |
+| 加入「留言板」板块后 | 317 | 32 680 B |
+| 改文案「母胎solo」后（当前） | 317 | 32 620 B |
 
-> 若打印出来的汉字数与 **285** 相同、字节数也完全相同，说明文案没变，不用重建。
+> 若打印出来的汉字数与 **317** 相同、字节数也完全相同，说明文案没变，不用重建。
 >
 > 注意：数字分身的**对话内容**写在 `js/digital-twin.js` 里，且用的是正文系统字体
 > （像聊天记录一样，刻意不用展示字体），因此**不需要**把它们补进 `extra_display.txt`。
@@ -78,7 +85,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "tools\resubset.ps1" `
 
 ## 手工重建（不想用脚本时）
 
-> 前提：能访问 `fonts.googleapis.com`（PowerShell 5.1 需先启用 TLS 1.2）
+> 前提：能访问 `fonts.googleapis.com`（PowerShell 5.1 需先启用 TLS 1.2）。
+> 若访问不通，把域名换成 `fonts.loli.net` / `fonts.font.im` / `fonts.googleapis.cn`
+> 之一即可（镜像走同一套后端，`text=` 子集化行为一致）。
 
 ```powershell
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -112,9 +121,15 @@ Invoke-WebRequest -Uri $src -OutFile (Join-Path $fdir 'zcool-kuaile-subset.woff2
 ## 重建之后还要做什么
 
 1. 跑 `tools\verify_v35.ps1 -Root "outputs\personal-homepage-v35"`，确认 `FAIL count = 0`。
-2. **重新导出单文件版**（它把字体以 base64 内联进去了，不同步就是旧的）：
+2. **实测新字是不是真进了子集**（只改一两个字时最容易翻车，`verify` 查不到这个）：
+   把 woff2 和一张探针页放进同一目录，用 `tools\serve_site.ps1` 起本地服务
+   （必须走 `http://`，`file://` 下浏览器会拒绝加载字体），
+   再用画布把同一个字分别用 `"子集字体名"` 和 `"一个不存在的字体名"` 各画一遍：
+   两次像素**不同** = 这个字来自子集；**完全相同** = 它其实回退到了系统字体。
+   2026-09-21 的「母」「胎」两字就是用这个方法验证的，并带了一个必然缺失的汉字作对照。
+3. **重新导出单文件版**（它把字体以 base64 内联进去了，不同步就是旧的）：
    `tools\export_single_file.ps1`
-3. 提交 git。
+4. 提交 git。
 
 > 注意：只替换 `assets/fonts/` 下的 woff2 文件即可，**`OFL-*.txt` 不要删除**，
 > 那是 OFL 授权要求随字体分发的文件。

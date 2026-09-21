@@ -84,12 +84,16 @@ foreach ($tag in @('div','section','form','fieldset','button','label','p','artic
 }
 
 Say ""
-Say "===== 5) 脚本顺序（config 必须先于 feedback.js） ====="
+Say "===== 5) 脚本顺序（config 必须先于 feedback.js / board.js） ====="
 $iCfg = $html.IndexOf('js/feedback-config.js')
 $iFb  = $html.IndexOf('js/feedback.js"')
+$iBd  = $html.IndexOf('js/board.js"')
 $iMain= $html.IndexOf('js/main.js')
-Say "  main=$iMain  config=$iCfg  feedback=$iFb"
-if (-not ($iCfg -gt 0 -and $iFb -gt $iCfg)) { Say "  FAIL order"; $fail++ } else { Say "  ok  config loaded before feedback" }
+Say "  main=$iMain  config=$iCfg  feedback=$iFb  board=$iBd"
+if (-not ($iCfg -gt 0 -and $iFb -gt $iCfg)) { Say "  FAIL order (config before feedback)"; $fail++ }
+else { Say "  ok  config loaded before feedback" }
+if (-not ($iCfg -gt 0 -and $iBd -gt $iCfg)) { Say "  FAIL order (config before board)"; $fail++ }
+else { Say "  ok  config loaded before board" }
 
 Say ""
 Say "===== 6) 外部链接扫描（HTML/CSS/JS） ====="
@@ -151,6 +155,31 @@ foreach ($jsFile in $jsFiles) {
   }
 }
 if ($contractChecked -eq 0) { Say "  WARN no getElementById/attribute selector found to check" }
+
+Say ""
+Say "===== 10) XSS guard + guestbook contract ====="
+# Why this exists: the guestbook renders text that strangers typed. If any script
+# builds that HTML by string concatenation, one visitor posting "<script>...</script>"
+# would run code inside every other visitor's browser. So: forbid the HTML-string
+# sinks in js\ completely, and require the board section to carry its public warning.
+$sinks = @('innerHTML', 'insertAdjacentHTML', 'outerHTML', 'document.write')
+$sinkHit = 0
+foreach ($jsFile in $jsFiles) {
+  $jsCode = Strip-Comments ([System.IO.File]::ReadAllText($jsFile.FullName, [System.Text.Encoding]::UTF8))
+  foreach ($s in $sinks) {
+    if ($jsCode -match [regex]::Escape($s)) {
+      Say "  FAIL $($jsFile.Name) uses $s  (visitor text must be inserted as text, not HTML)"
+      $sinkHit++; $fail++
+    }
+  }
+}
+if ($sinkHit -eq 0) { Say "  ok   no HTML-string sink in js\ (textContent only)" }
+
+# the guestbook block itself: it must exist, and it must say out loud that it is public
+if ($htmlIdList -contains 'board') { Say "  ok   #board section present" }
+else { Say "  MISS #board section in index.html"; $fail++ }
+if ($html -match 'board__notice') { Say "  ok   public warning block present (visitors know it is public)" }
+else { Say "  MISS public warning block (board__notice) in the guestbook section"; $fail++ }
 
 Say ""
 Say "===== 汇总 ====="

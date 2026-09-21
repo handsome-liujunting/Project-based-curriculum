@@ -33,15 +33,66 @@ $cjk = ($chars | Sort-Object -Unique) -join ''
 $asciiChars = $all.ToCharArray() | Where-Object { $ac = [int]$_; $ac -ge 32 -and $ac -le 126 }
 $ascii = ($asciiChars | Sort-Object -Unique) -join ''
 
+# Google Fonts is flaky from this machine (frequent timeouts), so every request
+# walks a mirror list until one answers. Mirrors serve the same backend/v22 and
+# honour the same ?text= server-side subsetting, so coverage is identical.
+$cssHosts = @(
+  'https://fonts.googleapis.com',
+  'https://fonts.loli.net',
+  'https://fonts.font.im',
+  'https://fonts.googleapis.cn'
+)
+# font binary hosts, used if the URL returned by the css host is unreachable
+$binHosts = @(
+  'https://fonts.gstatic.com',
+  'https://gstatic.loli.net',
+  'https://fonts.gstatic.font.im',
+  'https://fonts.gstatic.cn'
+)
+
+function Get-CssUrl {
+  param([string]$Family, [string]$Text)
+  $q = "/css2?family=$Family&text=" + [System.Uri]::EscapeDataString($Text) + "&display=swap"
+  $errs = @()
+  foreach ($h in $cssHosts) {
+    foreach ($attempt in 1..2) {
+      try {
+        $resp = Invoke-WebRequest -Uri ($h + $q) -UseBasicParsing -Headers @{ 'User-Agent' = $ua } -TimeoutSec 25
+        $m = [regex]::Match($resp.Content, 'url\((https://[^)]+)\)')
+        if ($m.Success) {
+          Write-Host ("  css host ok : $h  (attempt $attempt)")
+          return $m.Groups[1].Value
+        }
+        $errs += "$h : no woff2 url in css"
+      } catch {
+        $errs += "$h : " + $_.Exception.Message
+      }
+    }
+  }
+  throw ("all css hosts failed -> " + ($errs -join ' || '))
+}
+
 function Get-Woff2 {
   param([string]$Family, [string]$Text, [string]$Out)
-  $u = "https://fonts.googleapis.com/css2?family=$Family&text=" + [System.Uri]::EscapeDataString($Text) + "&display=swap"
-  $resp = Invoke-WebRequest -Uri $u -UseBasicParsing -Headers @{ 'User-Agent' = $ua } -TimeoutSec 30
-  $m = [regex]::Match($resp.Content, 'url\((https://fonts\.gstatic\.com/[^)]+)\)')
-  if (-not $m.Success) { throw "no woff2 url for $Family" }
-  Invoke-WebRequest -Uri $m.Groups[1].Value -OutFile $Out -UseBasicParsing -Headers @{ 'User-Agent' = $ua } -TimeoutSec 90
-  $len = (Get-Item -LiteralPath $Out).Length
-  return "OK $Family  chars=$($Text.Length)  bytes=$len"
+  $u = Get-CssUrl -Family $Family -Text $Text
+  $cands = @($u)
+  foreach ($bh in $binHosts) {
+    $cands += ([regex]::Replace($u, '^https://[^/]+', $bh))
+  }
+  $errs = @()
+  foreach ($c in $cands) {
+    foreach ($attempt in 1..2) {
+      try {
+        Invoke-WebRequest -Uri $c -OutFile $Out -UseBasicParsing -Headers @{ 'User-Agent' = $ua } -TimeoutSec 60
+        $len = (Get-Item -LiteralPath $Out).Length
+        if ($len -lt 512) { throw "suspiciously small ($len bytes)" }
+        return "OK $Family  chars=$($Text.Length)  bytes=$len  via=$([regex]::Match($c,'^https://[^/]+').Value)"
+      } catch {
+        $errs += "$c : " + $_.Exception.Message
+      }
+    }
+  }
+  throw ("all font hosts failed for $Family -> " + ($errs -join ' || '))
 }
 
 "CJK chars: $($cjk.Length)"

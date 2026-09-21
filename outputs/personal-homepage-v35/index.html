@@ -34,6 +34,15 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
             没有更换框架，原有的结构、配色、动效一律保留。**
   新增文件：css/feedback.css、js/feedback.js、js/feedback-config.js
             （原 style.css / main.js 未改动，方便对照 diff）
+
+  V3.5 增补 —— 留言板（应用户要求追加，不在课件要求内）
+  ------------------------------------------------------------
+  改动范围：在「联系」之后新增第 06 个区块「留言板」，导航与页脚各加一个入口。
+  与反馈的区别：反馈是**私密**的（只有我能看到），留言板是**公开**的
+                （写在墙上，所有访客都能看到）。
+  新增文件：css/board.css、js/board.js
+  安全：留言用 textContent 逐字插入，不拼 HTML（防 XSS）；
+        表 messages 只开放"公开读 + 插入"，不开放修改与删除。
   安全：前端只放 publishable key，secret key / service_role key
         绝不进入本文件或本仓库（详见 js/feedback-config.js 注释）
   发布：站点位于仓库根目录，由 GitHub Pages 托管
@@ -46,6 +55,8 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
   <link rel="stylesheet" href="css/feedback.css" />
   <!-- 数字分身样式（独立文件，同样不改动 style.css） -->
   <link rel="stylesheet" href="css/digital-twin.css" />
+  <!-- 留言板样式（独立文件，同样不改动 style.css） -->
+  <link rel="stylesheet" href="css/board.css" />
 </head>
 <body>
 <a class="skip" href="#main">跳到主要内容</a>
@@ -58,6 +69,7 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
     <a href="#skills">技能</a>
     <a href="#works">作品</a>
     <a href="#twin">分身</a>
+    <a href="#board">留言板</a>
     <a href="#contact">联系</a>
   </nav>
   <!-- 阅读进度条 -->
@@ -250,7 +262,7 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
     <div class="twin reveal">
       <div class="twin__face" aria-hidden="true">🌙</div>
       <div class="twin__body">
-        <p class="twin__meta">INFJ · 没谈过恋爱 · 爱读近代史</p>
+        <p class="twin__meta">INFJ · 母胎solo · 爱读近代史</p>
         <p class="twin__text">他比我本人愿意说话一点，不过也只肯说到这儿。你想问的，多半在这几句里。</p>
         <button class="dt-open" id="dtOpen" type="button">
           <svg class="dt-open__ico" viewBox="0 0 24 24" aria-hidden="true">
@@ -272,6 +284,57 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
     <div class="contact reveal">
       <a class="btn btn--yellow btn--lg" href="mailto:2909114517@qq.com?subject=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E5%88%98%E4%BF%8A%E5%BB%B7">2909114517@qq.com</a>
       <span class="barcode barcode--light" aria-hidden="true"></span>
+    </div>
+  </section>
+
+  <!-- ================= 06 留言板（V3.5 增补，应用户要求追加） =================
+       和右下角「提个意见」的区别要一眼看懂：
+         反馈 = 私密，只有站点作者能看到；
+         留言板 = 公开，写在下面就会贴到墙上给所有人看。
+       留言渲染一律走 textContent（见 js/board.js），不拼 HTML。 -->
+  <section class="section section--yellow" id="board">
+    <span class="rail" aria-hidden="true"><i class="rail__track"><b class="rail__fill"></b></i><b class="rail__dot"></b></span>
+    <h2 class="h-title reveal">留言板</h2>
+    <p class="section__lead reveal">路过就写一句吧。写完会贴在这面墙上，别人也看得到。</p>
+    <div class="rule" aria-hidden="true"></div>
+
+    <div class="board reveal">
+      <p class="board__notice">
+        <span class="board__tag">公开</span>
+        这面墙是公开的：你写的话会显示给所有来访的人看，所以别写电话、住址这类私人信息。
+        只想说给我一个人听，请用右下角那个「提个意见」，那条只有我能看到。
+      </p>
+
+      <form class="board__form" id="bdForm" novalidate>
+        <div class="board__field">
+          <label class="board__label" for="bdName">怎么称呼你（可选）</label>
+          <input class="board__input" id="bdName" name="name" type="text" maxlength="20"
+                 autocomplete="off" placeholder="不填就写“匿名”" />
+        </div>
+
+        <div class="board__field">
+          <label class="board__label" for="bdMessage">想说的话 <span class="board__req">必填</span></label>
+          <textarea class="board__input board__input--area" id="bdMessage" name="message"
+                    rows="3" maxlength="280" required
+                    placeholder="例如：路过来看看，祝你在深圳一切顺利。"></textarea>
+          <p class="board__count"><span id="bdCount">0</span> / 280</p>
+        </div>
+
+        <div class="board__actions">
+          <button class="btn btn--red" id="bdSubmit" type="submit">贴到墙上</button>
+          <p class="board__status" id="bdStatus" role="status" aria-live="polite"></p>
+        </div>
+
+        <p class="board__fallback" id="bdFallback" hidden>
+          留言板还没接通。先把这句话复制下来，用邮件发给我也一样能收到。
+          <button class="board__copy" id="bdCopy" type="button">复制这句话</button>
+        </p>
+      </form>
+
+      <div class="board__list" id="bdList" aria-live="polite" aria-busy="true">
+        <p class="board__state" id="bdState">正在打开留言板…</p>
+      </div>
+      <p class="board__more" id="bdMore" hidden>墙上只挂最近 30 条，更早的留言我在后台按时间留着。</p>
     </div>
   </section>
 
@@ -299,6 +362,7 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
     <a href="#skills">技能</a>
     <a href="#works">作品</a>
     <a href="#twin">分身</a>
+    <a href="#board">留言板</a>
     <a href="#contact">联系</a>
   </nav>
 </footer>
@@ -314,7 +378,7 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
       <span class="dt-head__face" aria-hidden="true">🌙</span>
       <div class="dt-head__text">
         <h2 class="dt-head__title" id="dtTitle">数字分身</h2>
-        <p class="dt-head__meta">INFJ · 没谈过恋爱 · 爱读近代史</p>
+        <p class="dt-head__meta">INFJ · 母胎solo · 爱读近代史</p>
       </div>
       <button class="dt-close" type="button" data-dt-close aria-label="关闭数字分身">×</button>
     </div>
@@ -402,6 +466,7 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
 <script src="js/main.js"></script>
 <script src="js/feedback-config.js"></script>
 <script src="js/feedback.js"></script>
+<script src="js/board.js"></script>
 <script src="js/digital-twin.js"></script>
 </body>
 </html>

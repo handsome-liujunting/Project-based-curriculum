@@ -13,18 +13,26 @@
        也不能出现在这个仓库的任何文件里 —— 它们能绕过 RLS，等于把后台
        交给了所有访客。如果哪天不小心泄露，立刻去控制台轮换（重置）密钥。
 
-   没填之前：页面照常打开，反馈表单会显示"通道待接入"，点提交也不会报错。
+   没填之前：页面照常打开，反馈表单会显示"通道待接入"，点提交也不会报错；
+             留言板同样不假装成功，而是退化成"复制 + 邮件"的兜底通道。
+
+   这个文件管两张表：
+     table      → feedback，私密：访客只能写、读不到
+     boardTable → messages，公开：访客能读也能写（页面上的留言板）
    ========================================================= */
 
 window.FEEDBACK_CONFIG = {
   /* Supabase 项目地址，形如 https://abcdefghijklmn.supabase.co（结尾不要带 /） */
-  url: "",
+  url: "https://xlethwinxqwkaydkhdcl.supabase.co",
 
   /* publishable key（可以公开） */
-  anonKey: "",
+  anonKey: "sb_publishable_vW06l8jh4jkQ47p0v6hujw_Hk0-UdkE",
 
   /* 数据表名：与建表脚本保持一致 */
   table: "feedback",
+
+  /* 留言板数据表名（公开可读，只开放插入） */
+  boardTable: "messages",
 
   /* 网站版本：提交时自动附带，访客不用填 */
   siteVersion: "V3.5",

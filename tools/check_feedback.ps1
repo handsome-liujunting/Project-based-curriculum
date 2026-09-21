@@ -31,6 +31,23 @@ $script:fail = 0
 
 function Say([string]$t) { Write-Output $t }
 
+# Read the JSON body of a failed web request.
+# PS 5.1 detail: Invoke-WebRequest already consumed the response stream, so the
+# body lives in $_.ErrorDetails.Message; the stream fallback only works sometimes.
+function Get-ErrBody($ex) {
+  try {
+    if ($ex.ErrorDetails -and $ex.ErrorDetails.Message) { return [string]$ex.ErrorDetails.Message }
+  } catch { }
+  try {
+    $rs = $ex.Exception.Response.GetResponseStream()
+    if (-not $rs) { return '' }
+    $sr = New-Object System.IO.StreamReader($rs)
+    $t = $sr.ReadToEnd()
+    $sr.Close()
+    return $t
+  } catch { return '' }
+}
+
 $cfgPath = Join-Path $Root 'js\feedback-config.js'
 Say "== V3.5 feedback backend self-check =="
 Say ("config: " + $cfgPath)
@@ -121,14 +138,23 @@ try {
 } catch {
   $status = 0
   if ($_.Exception.Response) { $status = [int]$_.Exception.Response.StatusCode }
-  if ($status -eq 404) {
+  $errBody = Get-ErrBody $_
+  # Two designs both count as "visitors cannot read feedback":
+  #   a) RLS only (Supabase default grants kept) -> HTTP 200 with []
+  #   b) RLS + revoke select (our SQL does this) -> HTTP 401/403 "permission denied"
+  # (b) is stricter: the read dies at the privilege layer before RLS is even consulted.
+  if (($status -eq 401 -or $status -eq 403) -and ($errBody -match '(?i)permission denied|42501')) {
+    Say ("PASS  [3/5] anon read blocked .. HTTP " + $status + " permission denied (revoke select; stricter than RLS-only)")
+  } elseif ($status -eq 404) {
     Say ("FAIL  [3/5] table missing ....... HTTP 404 -- run the V3.5 SQL file in docs/ first")
+    $script:fail++
   } elseif ($status -eq 401) {
     Say ("FAIL  [3/5] rejected ........... HTTP 401 -- publishable key is wrong or was rotated")
+    $script:fail++
   } else {
-    Say ("FAIL  [3/5] request failed ..... " + $_.Exception.Message)
+    Say ("FAIL  [3/5] request failed ..... " + $_.Exception.Message + "  " + $errBody)
+    $script:fail++
   }
-  $script:fail++
 }
 
 # ---- 4) optional marked test insert ----

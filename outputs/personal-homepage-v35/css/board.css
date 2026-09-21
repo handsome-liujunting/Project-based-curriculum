@@ -1,0 +1,244 @@
+/* =========================================================
+   V3.5 增补 —— 留言板样式（独立文件，不改动 style.css）
+
+   设计语言与 V3.5 其余部分完全一致：
+     · 4px 墨黑描边 + 左上错位实心阴影（漫画"贴纸"手感）
+     · 左侧一条强调色带，颜色按卡片顺序轮换
+     · 标题用 --display（Bangers / 站酷快乐体），正文用 --font
+
+   配色只用 style.css 里已有的 token，不新增颜色。
+   区块本身是 .section--yellow（见 index.html），所以卡片统一白底黑字。
+   ========================================================= */
+
+/* ---------- 区块容器 ---------- */
+.board {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  gap: 22px;
+}
+
+/* ---------- 公开提示条 ----------
+   把这句提醒放在表单**前面**：访客在写字之前就该知道"这面墙是公开的"。
+   用墨黑底 + 白字，是整段里对比最强的一块，很难被忽略。 */
+.board__notice {
+  position: relative;
+  margin: 0;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 8px;
+  padding: 16px 18px;
+  font-size: .95rem;
+  font-weight: 600;
+  line-height: 1.8;
+}
+
+.board__tag {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 1px 9px;
+  background: var(--yellow);
+  color: var(--ink);
+  border-radius: 4px;
+  font-weight: 800;
+  font-size: .78rem;
+  letter-spacing: 1px;
+}
+
+/* ---------- 表单卡片 ---------- */
+.board__form {
+  background: #fff;
+  color: var(--ink);
+  border: 4px solid var(--ink);
+  border-left: 13px solid var(--red);
+  border-radius: 8px;
+  box-shadow: 7px 7px 0 var(--ink);
+  padding: 20px;
+}
+
+.board__field { margin: 0 0 16px; }
+
+.board__label {
+  display: block;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: .95rem;
+  letter-spacing: .5px;
+  margin-bottom: 7px;
+}
+
+.board__req {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 1px 6px;
+  font-family: var(--font);
+  font-size: .72rem;
+  font-weight: 800;
+  color: var(--red);
+  border: 2px solid var(--red);
+  border-radius: 4px;
+}
+
+.board__input {
+  width: 100%;
+  font-family: var(--font);
+  font-size: .98rem;
+  color: var(--ink);
+  background: #fff;
+  border: 3px solid var(--ink);
+  border-radius: 8px;
+  padding: 11px 13px;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.board__input::placeholder { color: #8A8578; }
+.board__input--area { min-height: 92px; resize: vertical; }
+.board__input:focus-visible { outline: 3px dashed var(--red); outline-offset: 2px; }
+
+.board__count {
+  margin: 6px 0 0;
+  font-size: .78rem;
+  font-weight: 700;
+  text-align: right;
+  color: #5A5A5A;
+}
+
+.board__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.board__status { margin: 0; font-size: .86rem; font-weight: 700; }
+.board__status[data-kind="ok"]  { color: #0B6B3A; }
+.board__status[data-kind="err"] { color: var(--red); }
+.board__status[data-kind="tip"] { color: #5A5A5A; }
+
+.board__actions .btn[disabled] {
+  opacity: .6;
+  animation: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ---------- 未配置后台时的兜底通道 ---------- */
+.board__fallback {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  background: var(--paper);
+  border: 3px dashed var(--ink);
+  border-radius: 8px;
+  font-size: .88rem;
+  line-height: 1.8;
+}
+.board__fallback[hidden] { display: none !important; }
+
+.board__copy {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 6px 12px;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: .84rem;
+  letter-spacing: .5px;
+  color: var(--ink);
+  background: var(--yellow);
+  border: 3px solid var(--ink);
+  border-radius: 6px;
+  box-shadow: 3px 3px 0 var(--ink);
+  cursor: pointer;
+}
+.board__copy:hover  { rotate: -3deg; scale: 1.04; }
+.board__copy:active { translate: 2px 2px; box-shadow: 0 0 0 var(--ink); }
+
+/* ---------- 留言墙 ---------- */
+.board__list { display: grid; gap: 14px; }
+
+/* 加载中 / 空墙 / 读取失败都用这一块，文案由 js/board.js 决定 */
+.board__state {
+  margin: 0;
+  padding: 16px;
+  background: var(--paper);
+  border: 3px dashed var(--ink);
+  border-radius: 8px;
+  font-size: .92rem;
+  font-weight: 700;
+}
+.board__state[hidden] { display: none !important; }
+
+.board__item {
+  position: relative;
+  background: #fff;
+  color: var(--ink);
+  border: 4px solid var(--ink);
+  border-left: 11px solid var(--blue);
+  border-radius: 8px;
+  box-shadow: 6px 6px 0 var(--ink);
+  padding: 14px 16px 14px 14px;
+}
+/* 左侧色带轮换（nth-of-type 只数 <article>，不受里面的状态段落影响） */
+.board__item:nth-of-type(4n+1) { border-left-color: var(--blue); }
+.board__item:nth-of-type(4n+2) { border-left-color: var(--red); }
+.board__item:nth-of-type(4n+3) { border-left-color: var(--pink); }
+.board__item:nth-of-type(4n+4) { border-left-color: var(--blue-d); }
+
+.board__item-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.board__who {
+  /* 故意**不用** --display（站酷快乐体是子集化的，只含页面自己的汉字）。
+     昵称是访客随便输的，用子集字体必然出现"半句换字"的乱样，
+     这里改成系统字体 + 加粗，颜色和字号仍能把它和正文区分开。 */
+  font-family: var(--font);
+  font-weight: 800;
+  font-size: .98rem;
+  letter-spacing: .3px;
+}
+
+.board__time {
+  flex: none;
+  font-size: .76rem;
+  font-weight: 700;
+  color: #6B6B6B;
+  font-variant-numeric: tabular-nums;
+}
+
+.board__text {
+  margin: 0;
+  font-size: .98rem;
+  line-height: 1.8;
+  color: #2B2B2B;
+  /* 留言里的换行照原样显示；超长不换行的串（比如一长串网址）也强制断开，
+     避免把卡片撑破 */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.board__more { margin: 0; font-size: .82rem; font-weight: 700; opacity: .85; }
+.board__more[hidden] { display: none !important; }
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 620px) {
+  .board { gap: 16px; }
+  .board__notice { padding: 14px 15px; font-size: .9rem; }
+  .board__form {
+    padding: 16px 14px;
+    border-width: 3px;
+    border-left-width: 9px;
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+  .board__item {
+    border-width: 3px;
+    border-left-width: 8px;
+    box-shadow: 5px 5px 0 var(--ink);
+    padding: 12px 13px;
+  }
+  .board__actions { gap: 10px; }
+  .board__actions .btn { flex: 1; }
+}
