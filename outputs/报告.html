@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>刘俊廷 · 个人主页 V1-V4 总结报告</title>
+<style>
+@page { size: A4; margin: 13mm 12mm; }
+html { -webkit-print-color-adjust: exact; }
+body { font-family: "Microsoft YaHei", "Segoe UI", system-ui, sans-serif; color: #111; line-height: 1.75;
+       max-width: 900px; margin: 0 auto; padding: 22px 26px 40px; font-size: 14px; }
+h1 { font-size: 26px; line-height: 1.35; border-bottom: 4px solid #111; padding-bottom: 8px; margin: 0 0 14px; }
+h2 { font-size: 19px; margin: 30px 0 12px; border-left: 6px solid #F0392B; padding-left: 10px; page-break-after: avoid; }
+h3 { font-size: 16px; margin: 20px 0 8px; page-break-after: avoid; }
+p { margin: 8px 0; }
+hr { border: none; border-top: 2px solid #111; margin: 24px 0; }
+table { border-collapse: collapse; width: 100%; margin: 10px 0 16px; font-size: 12.5px; page-break-inside: avoid; }
+th, td { border: 1px solid #8a8a8a; padding: 5px 7px; text-align: left; vertical-align: top; }
+th { background: #f2f2f2; }
+code { background: #f4f4f4; padding: 1px 4px; border-radius: 3px; font-family: Consolas, "Courier New", monospace; font-size: 12.5px; }
+pre { background: #f6f6f6; border: 1px solid #ddd; padding: 10px 12px; font-size: 12px; line-height: 1.6;
+      font-family: Consolas, "Courier New", monospace; white-space: pre-wrap; word-break: break-all; page-break-inside: avoid; }
+img { max-width: 100%; border: 1px solid #c8c8c8; }
+.row { display: flex; gap: 8px; align-items: flex-start; margin: 10px 0 14px; page-break-inside: avoid; }
+.row img { width: 50%; }
+a { color: #2E7DE0; text-decoration: none; word-break: break-all; }
+ul, ol { margin: 8px 0; padding-left: 24px; }
+li { margin: 3px 0; }
+</style></head>
+<body>
+<h1>个人主页 V1 → V4 · 迭代记录与总结报告</h1>
+<p><strong>刘俊廷</strong> · 计算机科学与技术在线地址：<a href="https://handsome-liujunting.github.io/Project-based-curriculum/">https://handsome-liujunting.github.io/Project-based-curriculum/</a>代码仓库：<a href="https://github.com/handsome-liujunting/Project-based-curriculum">https://github.com/handsome-liujunting/Project-based-curriculum</a>单文件离线版：<code>outputs/personal-homepage-v35-standalone/index.html</code>（双击即可打开，无需联网）报告日期：2026-10-06 ｜ V4 提交：<code>7a76419</code></p>
+<hr>
+<h2>0. 一句话概览</h2>
+<p>一个<strong>纯静态</strong>的个人主页：手写 HTML/CSS/JS，<strong>零框架、零构建、零第三方脚本</strong>。四个版本的改动全部留在同一个仓库里，每一版都有截图、有理由、有验证。</p>
+<table><thead><tr><th>项目</th><th>V4 现状</th></tr></thead><tbody><tr><td>页面结构</td><td>8 个 <code>section</code>、39 个 <code>id</code>、18 个 <code>article</code> 卡片</td></tr><tr><td>样式 / 脚本</td><td>5 个 CSS、5 个 JS（全部本地文件，无 CDN）</td></tr><tr><td>字体</td><td>自托管 2 个开源子集（站酷快乐体 44952 B / 432 汉字；Bangers 11072 B / 64 字符）</td></tr><tr><td>图片</td><td>4 张版本缩略图（合计约 236 KB），全站仅此 4 张位图</td></tr><tr><td>单文件离线版</td><td>513909 B，4/4 图片内联为 data URI，断网无断图</td></tr><tr><td>结构校验</td><td><code>verify_v35.ps1 -SiteOnly</code> → FAIL count = 0（10 组结构/契约/安全检查）</td></tr></tbody></table>
+<hr>
+<h2>a) 开发历史（版本 + 截图）</h2>
+<table><thead><tr><th>版本</th><th>日期</th><th>提交</th><th>一句话</th><th>主要改动</th></tr></thead><tbody><tr><td>V1</td><td>2026-09-05</td><td><code>f7aa66e</code></td><td>先让它能打开</td><td>语义化 HTML + 响应式 CSS，蓝色主色，卡片说明"我是谁、我会什么、怎么找我"</td></tr><tr><td>V2</td><td>2026-09-10</td><td><code>4062811</code></td><td>换成卡片化排版</td><td>卡片化布局 + 暖橙配色，导航加编号，首屏写正经自我介绍，标签换成"文史哲爱好者"</td></tr><tr><td>V3</td><td>2026-09-12</td><td><code>dcdb257</code></td><td>整站重画成美漫风</td><td>粗描边、网点、对话气泡、放射背景、楼群剪影、跑马灯；自托管两款开源字体</td></tr><tr><td>V3.5</td><td>2026-09-21</td><td><code>6bb6ec2</code></td><td>不动设计，先加通道</td><td>只加反馈入口与公开留言板（接真后台），方便与 V3 逐项对照</td></tr><tr><td><strong>V4</strong></td><td><strong>2026-10-06</strong></td><td><strong><code>7a76419</code></strong></td><td><strong>加上收意见的入口</strong></td><td>迭代历程区块 + 版本号推到 V4 + 反馈可用性修复 + 作品区口径修正</td></tr></tbody></table>
+<p>四个版本的首屏放在一起看：</p>
+<div class="row">
+<img src="screenshots-v4/versions/v1-hero.png" alt="V1 首屏：蓝色简洁风">
+<img src="screenshots-v4/versions/v2-hero.png" alt="V2 首屏：暖橙卡片化">
+</div>
+<div class="row">
+<img src="screenshots-v4/versions/v3-hero.png" alt="V3 首屏：美漫风">
+<img src="screenshots-v4/versions/v4-hero.png" alt="V4 首屏：加历程入口与提意见按钮">
+</div>
+<p><strong>这次改版的 Before / After（同一口径拍摄：1440×900 视口 + 首屏冻结，可逐块对照）：</strong></p>
+<div class="row">
+<img src="screenshots-v4/versions/v35-full-before.png" alt="Before：V3.5 整页">
+<img src="screenshots-v4/versions/v4-full.png" alt="After：V4 整页">
+</div>
+<p>左：V3.5（2026-09-21）｜右：V4（2026-10-06）。新增的是<strong>深色的"历程"区块</strong>（放 V1–V4 的首屏与理由）、右下角的<strong>"提个意见"悬浮按钮</strong>，以及导航里的"历程"入口；其余区块结构基本沿用。</p>
+<p><strong>为什么每一版要这么改：</strong></p>
+<ol>
+<li><strong>V1</strong>：先把"打得开、看得懂"做出来。版本号、动效、字体、后台一开始都不碰 —— 免得还没成型就陷进细节。</li>
+<li><strong>V2</strong>：第一版"像套模板"。于是改卡片化布局、加暖色、导航加编号，首屏写一句正经的自我介绍；顺手把"三分王"这类当时的标签换成更贴我的"文史哲爱好者"。</li>
+<li><strong>V3</strong>：前两版"好看，但不像我"。整站重画成美漫/波普风：粗描边、半调网点、对话气泡、放射背景、楼群剪影、跑马灯，并自托管两款开源字体（不依赖外部字体服务）。</li>
+<li><strong>V3.5</strong>：想加"收集意见"的能力，但<strong>不改设计</strong>，先只加通道（反馈入口 + 留言板），这样能和 V3 逐项对照着验收。</li>
+<li><strong>V4</strong>：把"过程"本身放到页面上（迭代历程区块），让访客自己能看见四版怎么变；同时修掉几处"能用但不体面"的问题（版本号、错误文案、作品区口径）。</li>
+</ol>
+<h2>b) 新增 / 修改的主要功能（附想法来源）</h2>
+<table><thead><tr><th>#</th><th>功能</th><th>出现在</th><th>想法来源</th><th>解决了什么</th></tr></thead><tbody><tr><td>1</td><td><strong>迭代历程区块</strong>（V1–V4 首屏 + 改了什么/为什么 + 提交号）</td><td>V4</td><td>课件 V4"好迭代 = 更好的决定，而不是更多改动"；作业要求报告能证明过程</td><td>把"我改过什么、为什么改"从口述变成访客能自己看的东西</td></tr><tr><td>2</td><td><strong>反馈入口「提个意见」</strong>（私密，只有我能看到）</td><td>V3.5</td><td>课件 V4 闭环第一步 Collect + "收集真实反馈"的要求</td><td>有一个真能收到意见的通道，而不是等别人主动说</td></tr><tr><td>3</td><td><strong>公开留言板</strong></td><td>V3.5</td><td>个人主页需要"有人来过"的信号；课件 V3 的"静态托管 + 后台"练习</td><td>访客能匿名留一句话，墙上只读、公开</td></tr><tr><td>4</td><td>反馈自动附带<strong>网站版本号</strong></td><td>V3.5 / V4 修正</td><td>自测：表单里的版本号还停在 V3.5，收到的意见会贴错版本</td><td>每条意见都自带来源版本，版本号只留一个来源</td></tr><tr><td>5</td><td>错误提示<strong>中文化</strong>（<code>friendly(err)</code>）</td><td>V4</td><td>自测：后台不可达时访客看到英文 <code>Failed to fetch</code></td><td>访客看到的是"网络好像不通，不影响别的"，原始信息只留给 console</td></tr><tr><td>6</td><td><strong>作品区口径修正</strong></td><td>V4</td><td>自测：作品区把"同一个项目"当两个作品，且文案停在 V2</td><td>作品列表与迭代历程不再互相打脸；数字分身如实标注为"本地关键词匹配、不联大模型"</td></tr><tr><td>7</td><td><strong>字体子集重建</strong></td><td>V4</td><td>自测：新文案里出现缺字（方框）</td><td>432 个汉字全在子集内，仍不依赖外部字体服务</td></tr><tr><td>8</td><td><strong>单文件离线版</strong></td><td>V3.5 / V4 重导</td><td>交付与演示需要"离线也能开、也能发"</td><td>513909 B 单文件，4/4 图片内联，断网无断图</td></tr></tbody></table>
+<p><strong>刻意没做的（写了理由，见 <code>docs\V4-反馈决策表.md</code>）：</strong></p>
+<ul>
+<li><strong>不换 <code>supabase-js</code></strong>：前端只做"写一条、读一列"，原生 <code>fetch</code> 足够；引入 SDK 只为省几行代码，不值得多一个依赖。</li>
+<li><strong>迭代缩略图暂不加懒加载</strong>：收益有限，却要同时改导出（内联）、同步、截图三条链路 —— 记为下次加图时的第一步。</li>
+<li><strong>留言板不加登录门槛</strong>：匿名墙的意图就是"随便留一句"，加登录会劝退。</li>
+</ul>
+<h2>c) 遇到并解决的问题（原因 + 解决）</h2>
+<p>&gt; 这一节按"现象 → 排查 → 根因 → 解决 → 验证"写，包括我自己踩的坑和工具骗我的那两次。</p>
+<p><strong>C1. 手机端"导航和标题被裁掉了"（假缺陷）</strong></p>
+<ul>
+<li>现象：375 宽的头屏截图中，导航最后两项和标题右侧像被切掉。</li>
+<li>排查：先用页内几何探针实测真视口；再把请求宽度与渲染宽度打印出来 —— 请求 375，实际渲染 504，PNG 是 504 渲染后裁成 375。</li>
+<li>根因：<strong>Windows 上浏览器窗口宽度下不去</strong>（有约 500px 的最小宽度限制），不是站点问题。真 375 视口（CDP 设备模拟）下 <code>docScrollW=375</code>、<code>overRight=none</code>、7 项导航全部可见。</li>
+<li>解决：<strong>不改站点 CSS</strong>；改用 CDP 设备模拟出真手机视口；把伪影图留档在 <code>outputs/_work/shots/badshots/</code> 作为证据。</li>
+<li>验证：<code>v4-phone.png</code>、<code>v4-phone-iterations.png</code> 均为真 375×812。</li>
+</ul>
+<p><strong>C2. 整页截图里首屏被拉得很长</strong></p>
+<ul>
+<li>现象：把窗口设成 1440×6200 拍整页，首屏（<code>.hero</code>）高度异常。</li>
+<li>根因：<code>.hero { min-height: 90vh }</code> —— 首屏高度跟随视口，超高视口必然撑高。</li>
+<li>解决：拍摄时只冻结首屏高度（<code>min-height:0; height:725px</code>），其余区块仍按真实文档流排版。</li>
+<li>验证：真 1440×900 视口（CDP 设备模拟）实测 <code>docScrollH=6943</code>、首屏 <code>810</code>（<code>90vh</code>）；窗口口径（<code>probe_v35.ps1</code>，视口 1410×805）实测 <code>iterations=2958 / doc=6858</code>。两者只差首屏那 85px，<strong>历程及其后所有区块的纵向坐标完全一致</strong>。</li>
+</ul>
+<p><strong>C3. 单文件版导出后"图片没内联 / 断图"</strong></p>
+<ul>
+<li>现象：<code>export_single_file.ps1</code> 报 <code>image inlining mismatch: 4/</code>（数字截断）。</li>
+<li>根因：PowerShell 5.1 把<strong>无 BOM 的 <code>.ps1</code> 按 ANSI 解析</strong>，中文注释的多字节序列错位后<strong>静默吞掉了后面的赋值语句</strong> —— 不是图片的问题。</li>
+<li>解决：脚本改为<strong>纯 ASCII</strong>；内联前后各做一次数量校验，不符即中止且不写文件。</li>
+<li>验证：<code>img refs 4 / inlined css 5 / inlined js 5 / images ok 4/4 as data URI</code> → 513909 B。</li>
+</ul>
+<p><strong>C4. 反馈表单里的版本号还是 V3.5</strong></p>
+<ul>
+<li>现象：自测发现页面已到 V4，表单上报的版本号仍是旧值。</li>
+<li>根因：版本号散落多处，改版时漏改（数据会记成错的版本）。</li>
+<li>解决：版本号只留<strong>一个来源</strong>（<code>js/feedback-config.js</code> 的 <code>siteVersion</code>），表单显示与上报都读它。</li>
+<li>验证：页内探针读到 <code>siteVersion="V4"</code>，弹窗中"网站版本"显示 V4；写入 <code>docs\V4-回归测试清单.md</code> 作为固定回归项。</li>
+</ul>
+<p><strong>C5. 新文案出现缺字（方框）</strong></p>
+<ul>
+<li>现象：改完文案后，个别汉字渲染成方框。</li>
+<li>根因：字体是<strong>按需子集</strong>，新文案的字不在子集里。</li>
+<li>解决：<code>tools/resubset.ps1 -Root outputs\personal-homepage-v35 -ExtraFile tools\extra_display.txt</code> 重新生成子集（430 → 432 字）。</li>
+<li>验证：<code>chars=432 bytes=44952</code>（ZCOOL）/ <code>chars=64 bytes=11072</code>（Bangers），页面无方框。</li>
+</ul>
+<p><strong>C6. 作品区与新加的历程区块互相打脸</strong></p>
+<ul>
+<li>现象：迭代历程说"现在是 V4"，作品区却还把同一个站当成两个作品，文案停在 V2。</li>
+<li>根因：内容更新滞后于结构更新（只改代码、没回看文案）。</li>
+<li>解决：把作品区改成"个人主页 V1 到 V4"（并指向历程区块）+ 把真实的"数字分身"单列，其余保留"待补充"。</li>
+<li>验证：改后用 ASCII 锚点整块替换 + 前后计数校验（标题 9→9、卡片 5、结构 id/div/article 数不变），<code>verify</code> FAIL count = 0。</li>
+</ul>
+<p><strong>C7. 后台不可达时，访客看到英文报错</strong></p>
+<ul>
+<li>现象：留言板状态条显示 <code>留言板没打开成功（Failed to fetch）…</code>。</li>
+<li>根因：直接把 <code>err.message</code> 渲染给访客。</li>
+<li>解决：<code>board.js</code> / <code>feedback.js</code> 各加 <code>friendly(err)</code>：网络类 → "网络好像不通"、超时类 → "等太久了，先停下"；原始报错只进 console。</li>
+<li>验证：页内探针复读状态文案已变为"留言板没打开成功（网络好像不通）…"；两文件 LF-only、无 BOM、无乱码。</li>
+</ul>
+<p><strong>C8. 后台本身连不上了（外部依赖）</strong></p>
+<ul>
+<li>现象：留言板和反馈都失败，而浏览器访问其它网站正常。</li>
+<li>排查：页内分别试"普通请求"和 <code>no-cors</code> 请求（两者都 <code>THREW</code> → <strong>不是 CORS</strong>）；域名解析返回 <strong>NXDOMAIN</strong>（同一解析器对 <code>supabase.co</code>、<code>api.supabase.com</code> 均正常，只有项目主机解析不到）。</li>
+<li>根因：项目侧不可达（免费额度闲置被暂停一类），<strong>不是代码问题</strong>。</li>
+<li>解决：① 站点侧先做降级（C7），保证"后台不在也不难看"；② 项目本身由我本人去控制台确认/恢复（不拿推测当结论）；③ 恢复前后只做<strong>只读</strong>复验，不再往公开墙上写测试数据。</li>
+<li>验证（恢复后执行）：CORS 预检 200 / 留言板读 200 / 匿名写反馈仍 401。</li>
+</ul>
+<p><strong>C9. 自己的截图工具在慢请求上崩掉（工具 bug）</strong></p>
+<ul>
+<li>现象：跑"页内等 3 秒"的探针时，CDP 客户端抛 <code>AggregateException</code>。</li>
+<li>根因：接收循环在同一个 WebSocket 上发起了<strong>重叠的 <code>ReceiveAsync</code></strong>（快请求恰好掩盖了它）。</li>
+<li>解决：改为始终只保留一个未完成的接收，在同一 task 上反复等待。</li>
+<li>验证：慢探针稳定返回。</li>
+</ul>
+<p><strong>一条经验总结：</strong> C1、C2 都是"看起来坏了"，先复现再动手，等于省掉了两次无意义的改样式。<strong>验证优先于修改。</strong></p>
+<h2>d) 收集到的反馈与决策</h2>
+<p><strong>来源如实说明：</strong> 反馈入口与服务端于 <strong>2026-10-06 上线</strong>，同日发现项目侧不可达（C8），因此<strong>目前外部反馈为 0 条</strong>。下表是<strong>自测</strong>发现的问题与决策，每条都标了真实来源 —— 不拿自测冒充访客意见。完整表见 <code>docs\V4-反馈决策表.md</code>。</p>
+<table><thead><tr><th>编号</th><th>反馈/发现</th><th>来源</th><th>决定</th><th>理由</th></tr></thead><tbody><tr><td>D-01</td><td>手机端导航、标题被裁</td><td>自测（截图）</td><td><strong>Reject + 改方法</strong></td><td>复现证明是截图工具伪影，站点在真 375 下正常</td></tr><tr><td>D-02</td><td>整页截图首屏异常长</td><td>自测（截图）</td><td><strong>Reject + 改口径</strong></td><td><code>.hero</code> 用 <code>90vh</code> 是设计选择，问题在拍摄方式</td></tr><tr><td>D-03</td><td>作品区口径过时、自相矛盾</td><td>自测</td><td><strong>Accept</strong></td><td>影响面大、改动成本低，与新街区一致性优先</td></tr><tr><td>D-04</td><td>访客看到英文 <code>Failed to fetch</code></td><td>自测</td><td><strong>Accept</strong></td><td>一行级改动，直接改善观感</td></tr><tr><td>D-05</td><td>反馈上报的版本号仍是 V3.5</td><td>自测</td><td><strong>Accept</strong></td><td>不改会让之后所有意见贴错版本</td></tr><tr><td>D-06</td><td>新文案缺字</td><td>自测</td><td><strong>Accept</strong></td><td>重建子集即可，且仍不依赖外部服务</td></tr><tr><td>D-07</td><td>单文件漏内联图片</td><td>自测</td><td><strong>Accept</strong></td><td>离线交付是硬需求，根因在脚本编码</td></tr><tr><td>D-08</td><td>后台不可达</td><td>自测（外部依赖）</td><td><strong>Modify + 待办</strong></td><td>站点侧先降级；项目恢复由我本人处理</td></tr><tr><td>D-09</td><td>手机真机完整提交路径未覆盖</td><td>自测</td><td><strong>Delay</strong></td><td>需要真机 + 恢复后的后台，本轮无法诚实完成</td></tr><tr><td>D-10</td><td>外部访客反馈 0 条</td><td>事实</td><td><strong>Delay</strong></td><td>不编造；入口已就绪，收到即按本表流程处理</td></tr></tbody></table>
+<p><strong>优先级口径：</strong> 影响面（多少人会碰到）× 改动成本（要动几条链路）。D-03 属于"影响高 × 成本低"，所以优先做；懒加载属于"影响低 × 成本高（动导出/同步/截图三条链路）"，因此延后。</p>
+<p><strong>真实反馈进来后怎么走：</strong> ① 先复现（自己能不能看到同样的问题）→ ② 判定类别（看不懂 / 不好找 / 用着别扭 / 内容错）→ ③ 四种决定选一个（Accept / Modify / Delay / Reject，并写明理由）→ ④ 改完跑一遍回归清单 → ⑤ 把结论追加到决策表。</p>
+<h2>e) 回归测试</h2>
+<p><strong>自动化三项（可复跑）：</strong></p>
+<table><thead><tr><th>手段</th><th>结果</th></tr></thead><tbody><tr><td><code>verify_v35.ps1 -SiteOnly</code></td><td>FAIL count = 0（10 组：结构、JS↔HTML 契约、样式、安全等）</td></tr><tr><td><code>sync_site.ps1</code> 同步发布根</td><td>4 项拷完、无残留文件、自动校验 FAIL count = 0（20 个文件）</td></tr><tr><td><code>export_single_file.ps1</code></td><td><code>images ok 4/4 as data URI</code>，产物体积 513909 B</td></tr></tbody></table>
+<p><strong>课件六项（桌面 + 手机）：</strong></p>
+<table><thead><tr><th>项</th><th>结果</th></tr></thead><tbody><tr><td>桌面布局</td><td>真 1440×900 视口（CDP）：8 个区块 + 页脚纵向排列正确，<code>docScrollH=6943</code>、<code>overRight=none</code>；窗口口径下 <code>doc=6858</code></td></tr><tr><td>手机布局</td><td>真 375×812：<code>docScrollW=375</code>、<code>docScrollH=9004</code>、<code>overRight=none</code>、导航换 2 行共 7 项全可见（<code>navScroll=272/272</code>）、首屏标题 <code>x20..355</code></td></tr><tr><td>导航与按钮</td><td>桌面/手机各 7 个导航项全部可点且指向存在；"提个意见"可打开弹窗；留言板按钮文案正确</td></tr><tr><td>图片与链接</td><td>4 张缩略图全部加载（单文件版为 data URI）；邮箱 <code>mailto:</code> 1 处，无其它外链</td></tr><tr><td>反馈表单</td><td>弹窗字段、必填校验、版本号自动附带 V4；留言板必填校验与字数计数正常</td></tr><tr><td>加载速度</td><td>本地 20 个文件全静态，无 CDN、无框架；字体 2 个子集共约 56 KB</td></tr></tbody></table>
+<p><strong>未覆盖（如实说明）：</strong> 手机真机完整提交路径（D-09）、弱网/低速网络的性能实测、后台恢复后的真实提交（只做只读复验）。详细清单见 <code>docs\V4-回归测试清单.md</code>。</p>
+<h2>f) 版本记录与可回退点</h2>
+<table><thead><tr><th>版本</th><th>提交</th><th>可回退方式</th></tr></thead><tbody><tr><td>V1</td><td><code>f7aa66e</code></td><td><code>git checkout f7aa66e</code></td></tr><tr><td>V2</td><td><code>4062811</code></td><td><code>git checkout 4062811</code></td></tr><tr><td>V3</td><td><code>dcdb257</code></td><td><code>git checkout dcdb257</code></td></tr><tr><td>V3.5</td><td><code>6bb6ec2</code></td><td><code>git checkout 6bb6ec2</code></td></tr><tr><td><strong>V4</strong></td><td><strong><code>7a76419</code></strong></td><td>当前 <code>main</code></td></tr></tbody></table>
+<p>四个版本的首屏同时也被压缩成 4 张缩略图（<code>assets/img/iter-v1..4.jpg</code>，约 236 KB）<strong>放进了页面本身</strong>，所以就算仓库翻不到某个版本，访客也能看到它长什么样。</p>
+<h2>g) 反思（摘要）</h2>
+<ul>
+<li><strong>有价值的改动</strong>是让"过程"可被看见的那两件：迭代历程区块、版本号单一来源；不是"改了更多地方"。</li>
+<li><strong>差点做错的</strong>是 C1/C2：两次都准备改样式，先复现才发现错在测量工具。最值钱的经验是"先复现，再动手"。</li>
+<li><strong>卡点</strong>前三名：看不到真相（截图工具两次骗我）、编码陷阱（PS 5.1 把无 BOM 脚本按 ANSI 解析）、外部依赖说没就没（后台被暂停）。后者说明"能演示"和"能用"是两回事，页面必须有降级路径。</li>
+<li><strong>"真的更好了"靠证据</strong>：可复跑的校验 + 同口径 Before/After，而不是"看着顺眼"。</li>
+<li><strong>外部反馈仍是 0 条</strong>，我把它写在明面上而不是拿自测凑数 —— 这是本轮最大的待补缺口。</li>
+</ul>
+<p>完整的五问反思见 <code>docs\V4-反思.md</code>。</p>
+<h2>h) 附录</h2>
+<h3>证据清单（对照课件要求）</h3>
+<table><thead><tr><th>要求</th><th>位置</th></tr></thead><tbody><tr><td>更新后的主页链接</td><td>本页页首（Pages 地址）</td></tr><tr><td>反馈决策表</td><td><code>docs\V4-反馈决策表.md</code>（本报告 d 节为摘录）</td></tr><tr><td>Before / After 截图</td><td>本报告 a 节；原图 <code>outputs/screenshots-v4/versions/v35-full-before.png</code>、<code>v4-full.png</code></td></tr><tr><td>主要改动短清单</td><td>本报告 b 节</td></tr><tr><td>回归测试清单（桌面 + 手机）</td><td>本报告 e 节；<code>docs\V4-回归测试清单.md</code></td></tr><tr><td>相关 AI 对话记录</td><td><code>docs\V4-AI对话记录（脱敏）.md</code></td></tr><tr><td>版本记录</td><td>本报告 f 节（含 5 个提交号）</td></tr><tr><td>含 a/b/c/d 的 PDF</td><td>本 PDF 本身（文件名 <code>Junting Liu_Personal Homepage.pdf</code>）</td></tr></tbody></table>
+<h3>安全与权限</h3>
+<ul>
+<li>前端<strong>只有</strong> publishable/anon 级别的 key（可公开），service_role key 与数据库密码从不进入前端、仓库与截图。</li>
+<li>表权限：<code>feedback</code> 匿名<strong>只能写不能读</strong>（读/改/删返回 401）；<code>messages</code> 匿名可写、可读公开内容，改/删不可。公开墙只展示访客愿意公开的内容。</li>
+<li>反馈内容仅我本人可见（弹窗里明确写了"反馈不会公开，只有我能看到"）。</li>
+<li>全站外部链接只有 1 处 <code>mailto:</code>，无第三方脚本、无跟踪、无字体 CDN。</li>
+</ul>
+<h3>本地运行 / 复现</h3>
+<pre>
+tools\serve_site.ps1 -Root outputs -Port 8791      # 起本地静态服务
+http://127.0.0.1:8791/personal-homepage-v35/index.html
+tools\verify_v35.ps1 -SiteOnly                      # 结构/契约校验（应为 FAIL count = 0）
+tools\sync_site.ps1 -Src outputs\personal-homepage-v35 -Dst "."   # 同步到发布根
+tools\export_single_file.ps1 -Src outputs\personal-homepage-v35 -OutHtml outputs\personal-homepage-v35-standalone\index.html
+</pre>
+<h3>文件与体积（V4）</h3>
+<table><thead><tr><th>类别</th><th>明细</th></tr></thead><tbody><tr><td>页面</td><td><code>index.html</code> 31992 B（8 区块 / 39 id / 18 article）</td></tr><tr><td>样式</td><td><code>style.css</code> 26149、<code>digital-twin.css</code> 8101、<code>feedback.css</code> 6729、<code>board.css</code> 6377、<code>iterations.css</code> 3658</td></tr><tr><td>脚本</td><td><code>board.js</code> 11969、<code>digital-twin.js</code> 8567、<code>feedback.js</code> 6048、<code>main.js</code> 5044、<code>feedback-config.js</code> 1935</td></tr><tr><td>字体</td><td><code>zcool-kuaile-subset.woff2</code> 44952 B、<code>bangers-latin.woff2</code> 11072 B</td></tr><tr><td>图片</td><td><code>iter-v1..4.jpg</code> = 22854 / 29186 / 91432 / 92191</td></tr><tr><td>离线单文件</td><td><code>outputs/personal-homepage-v35-standalone/index.html</code> 513909 B</td></tr></tbody></table>
+<h3>AI 使用说明</h3>
+<p>本次迭代中 AI 承担脚本、探针、校验、格式整理与排查路径；需求取舍、验收口径、事实核对与最终决定由我做出。哪些接受、哪些否决都记在 <code>docs\V4-AI对话记录（脱敏）.md</code> 里，含一处 AI 自身 bug（C9）的修复记录。</p>
+</body></html>
