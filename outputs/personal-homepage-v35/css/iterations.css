@@ -98,3 +98,42 @@
 .section--ink .h-title { text-shadow: 4px 4px 0 var(--paper); }
 /* 标题左上角那颗星形贴纸原本靠半透明压彩底，在墨黑底上会发暗，提亮一点 */
 .section--ink .h-title::before { opacity: .8; }
+
+/* ---------- 版本目录：V1 / V2 / V3 / V4 ----------
+   为什么加：四张卡是两列两行（窄屏一列），滚到这一节时第一屏只完整显示
+   V1/V2，V3/V4 在第二行、要再往下滚一段，第一次看很容易误读成"只做了两版"。
+   目录把"一共四次改版"摆在最上面，点一下直达对应卡片。 */
+.iter__toc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 22px 0 4px;
+}
+.iter__toclead {
+  font-size: .86rem;
+  font-weight: 700;
+  color: var(--paper);
+  opacity: .85;
+}
+.iter__toclink {
+  display: inline-block;
+  padding: 5px 15px;
+  font-size: .9rem;
+  font-weight: 800;
+  letter-spacing: .5px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 4px 4px 0 rgba(255, 253, 245, .9);
+}
+.iter__toclink:hover,
+.iter__toclink:focus-visible {
+  background: var(--yellow);
+  outline: 3px solid var(--yellow);
+  outline-offset: 2px;
+}
+/* 顶栏是 sticky（style.css:112），锚点跳过去会被它盖住 —— 留出顶栏的高度 */
+.grid--iter > article { scroll-margin-top: 96px; }

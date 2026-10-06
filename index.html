@@ -283,8 +283,19 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
     <p class="section__lead reveal">每一版的首屏都留在这儿。改了什么、为什么改，写在卡片里。</p>
     <div class="rule" aria-hidden="true"></div>
 
+    <!-- 版本目录：四张卡是两列两行，滚到这一节时第一屏只完整显示 V1/V2，
+         容易被误读成"只有两个版本"。目录把"一共四版"摆在最上面，点一下直达。 -->
+    <nav class="iter__toc reveal" aria-label="版本目录">
+      <span class="iter__toclead">一共四次改版：</span>
+      <a class="iter__toclink" href="#iter-v1">V1</a>
+      <a class="iter__toclink" href="#iter-v2">V2</a>
+      <a class="iter__toclink" href="#iter-v3">V3</a>
+      <a class="iter__toclink" href="#iter-v4">V4</a>
+      <span class="iter__toclead">点一下跳过去</span>
+    </nav>
+
     <div class="grid grid--iter">
-      <article class="panel reveal">
+      <article class="panel reveal" id="iter-v1">
         <span class="panel__tag">V1</span>
         <img class="iter__shot" src="assets/img/iter-v1.jpg" width="900" height="562"
              alt="V1 首屏截图：蓝白配色，导航为「关于我、项目与作品、技能兴趣、数字分身、联系我」" />
@@ -294,7 +305,7 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
         <p class="iter__row"><b>为什么：</b>先把“打得开、看得懂”做出来。版本号、动效、字体、后台这些一开始都不碰，免得还没成型就陷进细节。</p>
       </article>
 
-      <article class="panel reveal">
+      <article class="panel reveal" id="iter-v2">
         <span class="panel__tag">V2</span>
         <img class="iter__shot" src="assets/img/iter-v2.jpg" width="900" height="562"
              alt="V2 首屏截图：暖橙配色、卡片化排版，导航带编号「01 关于我」到「05 联系我」" />
@@ -304,7 +315,7 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
         <p class="iter__row"><b>为什么：</b>第一版看着像套模板，不像自我介绍。想让每块内容都像一张贴纸贴上去；标签也得写得更像我本人。</p>
       </article>
 
-      <article class="panel reveal">
+      <article class="panel reveal" id="iter-v3">
         <span class="panel__tag">V3</span>
         <img class="iter__shot" src="assets/img/iter-v3.jpg" width="900" height="562"
              alt="V3 首屏截图：美漫风，黑顶栏、放射状背景与城市楼群剪影，导航为「故事、技能、作品、联系」" />
@@ -314,7 +325,7 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
         <p class="iter__row"><b>为什么：</b>前两版都“好看，但不像我”。既然是个人主页，就该长得像我说话的样子 —— 直接、有劲、带点漫画感。</p>
       </article>
 
-      <article class="panel reveal">
+      <article class="panel reveal" id="iter-v4">
         <span class="panel__tag">V4</span>
         <span class="iter__now">当前版本</span>
         <img class="iter__shot" src="assets/img/iter-v4.jpg" width="900" height="562"
