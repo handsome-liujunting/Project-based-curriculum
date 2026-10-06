@@ -31,6 +31,15 @@
   var lastFocus = null;
   var busy = false;
 
+  /* 与 board.js 同一套处理：把浏览器的英文网络报错翻成人话再给访客看，
+     原始报错只留在 console（自测时发现 "Failed to fetch" 会直接上屏）。 */
+  function friendly(err) {
+    var m = String((err && err.message) || err || "");
+    if (/Failed to fetch|NetworkError|Load failed|ERR_/i.test(m)) return "网络好像不通";
+    if (/abort/i.test(m)) return "等太久了，先停下";
+    return m || "未知原因";
+  }
+
   /* ---------- 配置是否已经填好 ---------- */
   function isConfigured() {
     return !!(
@@ -154,7 +163,8 @@
       })
       .catch(function (err) {
         /* 失败时什么都不清空：内容还在框里，可以直接再点一次 */
-        setStatus("err", "没提交成功，内容我帮你留着了，可以再点一次试试。（" + err.message + "）");
+        console.error("[feedback] 提交失败：", err);
+        setStatus("err", "没提交成功，内容我帮你留着了，可以再点一次试试。（" + friendly(err) + "）");
       })
       .then(function () {
         if (timer) clearTimeout(timer);

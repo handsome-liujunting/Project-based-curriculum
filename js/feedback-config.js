@@ -35,7 +35,7 @@ window.FEEDBACK_CONFIG = {
   boardTable: "messages",
 
   /* 网站版本：提交时自动附带，访客不用填 */
-  siteVersion: "V3.5",
+  siteVersion: "V4",
 
   /* 单次请求超时（毫秒） */
   timeoutMs: 12000

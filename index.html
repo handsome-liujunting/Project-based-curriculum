@@ -47,6 +47,19 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
         绝不进入本文件或本仓库（详见 js/feedback-config.js 注释）
   发布：站点位于仓库根目录，由 GitHub Pages 托管
   ============================================================
+  V4 —— 迭代历程（作业第四部分要求"迭代"）
+  ------------------------------------------------------------
+  改动范围：在「作品」之后新增第 04 个区块「迭代历程」，把 V1~V4 四版首屏
+            截图并排放到页面上，每张卡片写清"改了什么 / 为什么改"。
+            区块用墨黑底（配色语言不变，只是把"彩底 + 墨黑边"反相当作
+            "翻旧档案"），全部新样式集中在 css/iterations.css。
+            导航与页脚各加一个「历程」入口。
+            反馈表单里的版本号由 V3.5 更新为 V4（见 js/feedback-config.js）。
+  新增文件：css/iterations.css、assets/img/iter-v1.jpg ~ iter-v4.jpg
+  本次未改动：style.css / main.js / feedback.js / board.js / digital-twin.js
+            （改动集中在新增文件，方便在报告里对照 diff）
+  截图来源：tools/shots_versions.ps1 在同一 1440x900 视口下逐版重拍，
+            保证四个版本可横向比较（不滚动、不拼接）。
 -->
 <link rel="preload" href="assets/fonts/zcool-kuaile-subset.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="assets/fonts/bangers-latin.woff2" as="font" type="font/woff2" crossorigin />
@@ -57,6 +70,8 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
   <link rel="stylesheet" href="css/digital-twin.css" />
   <!-- 留言板样式（独立文件，同样不改动 style.css） -->
   <link rel="stylesheet" href="css/board.css" />
+  <!-- 迭代历程样式（V4 新增，独立文件，同样不改动 style.css） -->
+  <link rel="stylesheet" href="css/iterations.css" />
 </head>
 <body>
 <a class="skip" href="#main">跳到主要内容</a>
@@ -68,6 +83,8 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
     <a href="#story">故事</a>
     <a href="#skills">技能</a>
     <a href="#works">作品</a>
+    <a href="#iterations">历程</a>
+
     <a href="#twin">分身</a>
     <a href="#board">留言板</a>
     <a href="#contact">联系</a>
@@ -223,16 +240,16 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
     <p class="section__lead reveal">作品还在陆续补上，先把已经做好的放这里。</p>
     <div class="rule" aria-hidden="true"></div>
 
-    <div class="grid grid--works">
+        <div class="grid grid--works">
       <article class="panel panel--work reveal">
         <span class="panel__tag">网页</span>
-        <h3 class="panel__title">个人主页 V1</h3>
-        <p class="panel__text">从"能看"到"能发布"的第一版。</p>
+        <h3 class="panel__title">个人主页 V1 到 V4</h3>
+        <p class="panel__text">这个站本身就是作品：四版怎么改、为什么改，都写在下面的「历程」区块里。</p>
       </article>
       <article class="panel panel--work reveal">
-        <span class="panel__tag">网页</span>
-        <h3 class="panel__title">个人主页 V2</h3>
-        <p class="panel__text">卡片化布局 + 活力配色的迭代版。</p>
+        <span class="panel__tag">实验</span>
+        <h3 class="panel__title">数字分身</h3>
+        <p class="panel__text">页面上那个会回话的分身：关键词匹配、本地回复，不联大模型。</p>
       </article>
       <article class="panel panel--work reveal">
         <span class="panel__tag panel__tag--muted">待补充</span>
@@ -250,9 +267,69 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
         <p class="panel__text">敬请期待。</p>
       </article>
     </div>
+
   </section>
 
-  <!-- ================= 04 数字分身 ================= -->
+  <!-- ================= 04 迭代历程（V4 新增） =================
+       为什么把自己"改版的历史"也放上页面：
+         这次作业的重点是"迭代"，而迭代的价值在于能说清"改了什么、为什么改"。
+         与其只写一句"我优化了页面"，不如把四个版本的首屏并排放出来 ——
+         别人一眼能看出变化，我自己也能随时对照之前的样子。
+       截图口径：四个版本都在同一 1440x900 视口下重拍（tools/shots_versions.ps1），
+                 不滚动、不拼接，保证能横向比较。 -->
+  <section class="section section--ink" id="iterations">
+    <span class="rail" aria-hidden="true"><i class="rail__track"><b class="rail__fill"></b></i><b class="rail__dot"></b></span>
+    <h2 class="h-title reveal">四次改版，越改越像我</h2>
+    <p class="section__lead reveal">每一版的首屏都留在这儿。改了什么、为什么改，写在卡片里。</p>
+    <div class="rule" aria-hidden="true"></div>
+
+    <div class="grid grid--iter">
+      <article class="panel reveal">
+        <span class="panel__tag">V1</span>
+        <img class="iter__shot" src="assets/img/iter-v1.jpg" width="900" height="562"
+             alt="V1 首屏截图：蓝白配色，导航为「关于我、项目与作品、技能兴趣、数字分身、联系我」" />
+        <p class="iter__meta">2026-09-05 · 提交 f7aa66e</p>
+        <h3 class="panel__title">先让它能打开</h3>
+        <p class="iter__row"><b>改了什么：</b>从零写出第一版：语义化 HTML + 响应式 CSS，蓝色主色，用几张卡片把“我是谁、我会什么、怎么找我”说清楚。</p>
+        <p class="iter__row"><b>为什么：</b>先把“打得开、看得懂”做出来。版本号、动效、字体、后台这些一开始都不碰，免得还没成型就陷进细节。</p>
+      </article>
+
+      <article class="panel reveal">
+        <span class="panel__tag">V2</span>
+        <img class="iter__shot" src="assets/img/iter-v2.jpg" width="900" height="562"
+             alt="V2 首屏截图：暖橙配色、卡片化排版，导航带编号「01 关于我」到「05 联系我」" />
+        <p class="iter__meta">2026-09-10 · 提交 4062811</p>
+        <h3 class="panel__title">换成卡片化排版</h3>
+        <p class="iter__row"><b>改了什么：</b>整页改成卡片化布局 + 暖橙配色，导航加上编号，首屏加了一句正经的自我介绍；顺手把标签从“三分王”换成“文史哲爱好者”。</p>
+        <p class="iter__row"><b>为什么：</b>第一版看着像套模板，不像自我介绍。想让每块内容都像一张贴纸贴上去；标签也得写得更像我本人。</p>
+      </article>
+
+      <article class="panel reveal">
+        <span class="panel__tag">V3</span>
+        <img class="iter__shot" src="assets/img/iter-v3.jpg" width="900" height="562"
+             alt="V3 首屏截图：美漫风，黑顶栏、放射状背景与城市楼群剪影，导航为「故事、技能、作品、联系」" />
+        <p class="iter__meta">2026-09-12 · 提交 dcdb257</p>
+        <h3 class="panel__title">整站重画成美漫风</h3>
+        <p class="iter__row"><b>改了什么：</b>全站重画：粗描边、网点、对话气泡、放射背景、楼群剪影、跑马灯；并自托管两款开源字体（Bangers 拉丁字母 + 站酷快乐体中文）。</p>
+        <p class="iter__row"><b>为什么：</b>前两版都“好看，但不像我”。既然是个人主页，就该长得像我说话的样子 —— 直接、有劲、带点漫画感。</p>
+      </article>
+
+      <article class="panel reveal">
+        <span class="panel__tag">V4</span>
+        <span class="iter__now">当前版本</span>
+        <img class="iter__shot" src="assets/img/iter-v4.jpg" width="900" height="562"
+             alt="V4 首屏截图：沿用美漫风，导航补上「历程」入口，右下角是「提个意见」按钮" />
+        <p class="iter__meta">2026-10-06 · 接在 V3.5（6bb6ec2）之后</p>
+        <h3 class="panel__title">加上收意见的入口</h3>
+        <p class="iter__row"><b>改了什么：</b>右下角加了“提个意见”（私密，只有我能看到），页面底部加了公开留言板，两个都接真后台、提交后直接进数据库；再补上这一节“迭代历程”，版本号推到 V4。</p>
+        <p class="iter__row"><b>为什么：</b>页面能看之后，下一个问题是“别人用起来哪里别扭”。与其自己猜，不如留一个随时能收意见的入口，并且把收上来的意见怎么处理也记下来。</p>
+        <p class="iter__row"><b>中间那一步：</b>先做了 V3.5 —— 只加反馈通道和留言板、不动原有设计，方便和 V3 逐项对照。</p>
+      </article>
+    </div>
+
+    <p class="iter__foot reveal">四版之间不是推倒重来，是一次次改：结构基本沿用，换的是“怎么讲我自己”，以及“怎么听到别人的意见”。</p>
+  </section>
+  <!-- ================= 05 数字分身 ================= -->
   <section class="section section--pink" id="twin">
     <span class="rail" aria-hidden="true"><i class="rail__track"><b class="rail__fill"></b></i><b class="rail__dot"></b></span>
     <h2 class="h-title reveal">数字分身</h2>
@@ -275,7 +352,7 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
     </div>
   </section>
 
-  <!-- ================= 05 联系 ================= -->
+  <!-- ================= 06 联系 ================= -->
   <section class="section section--red" id="contact">
     <span class="rail" aria-hidden="true"><i class="rail__track"><b class="rail__fill"></b></i><b class="rail__dot"></b></span>
     <h2 class="h-title h-title--big reveal">每个主角<br />都有自己的开场白</h2>
@@ -287,7 +364,7 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
     </div>
   </section>
 
-  <!-- ================= 06 留言板（V3.5 增补，应用户要求追加） =================
+  <!-- ================= 07 留言板（V3.5 增补，应用户要求追加） =================
        和右下角「提个意见」的区别要一眼看懂：
          反馈 = 私密，只有站点作者能看到；
          留言板 = 公开，写在下面就会贴到墙上给所有人看。
@@ -361,6 +438,8 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
     <a href="#story">故事</a>
     <a href="#skills">技能</a>
     <a href="#works">作品</a>
+    <a href="#iterations">历程</a>
+
     <a href="#twin">分身</a>
     <a href="#board">留言板</a>
     <a href="#contact">联系</a>
@@ -452,7 +531,7 @@ setTimeout(function () { if (!window.__revealReady) { document.documentElement.c
 
       <div class="fb-field">
         <label class="fb-label" for="fbVersion">网站版本（自动附带，不用填）</label>
-        <input class="fb-input" id="fbVersion" type="text" value="V3.5" readonly />
+        <input class="fb-input" id="fbVersion" type="text" value="V4" readonly />
       </div>
 
       <div class="fb-actions">

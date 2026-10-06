@@ -50,6 +50,17 @@
   var busy = false;
   var loaded = false;
 
+  /* 把浏览器的英文网络报错翻成人话。
+     自测发现：Supabase 项目不可达时 fetch 抛 "Failed to fetch"，而这行英文原文
+     被直接拼进了给访客看的状态文字里。访客看不懂，也不该看到原始报错。
+     原始信息保留在 console 里，方便排查。 */
+  function friendly(err) {
+    var m = String((err && err.message) || err || "");
+    if (/Failed to fetch|NetworkError|Load failed|ERR_/i.test(m)) return "网络好像不通";
+    if (/abort/i.test(m)) return "等太久了，先停下";
+    return m || "未知原因";
+  }
+
   /* ---------- 配置是否已经填好 ---------- */
   function isConfigured() {
     return !!(
@@ -183,7 +194,8 @@
         return true;
       })
       .catch(function (err) {
-        setState("留言板没打开成功（" + err.message + "）。不耽误你写，写完照样能贴上去。");
+        console.error("[board] 留言板打开失败：", err);
+        setState("留言板没打开成功（" + friendly(err) + "）。不耽误你写，写完照样能贴上去。");
         return false;
       })
       .then(function (ok) {
@@ -307,7 +319,8 @@
       })
       .catch(function (err) {
         /* 失败时什么都不清空：内容还在框里，可以直接再点一次 */
-        setStatus("err", "没贴上去，内容我帮你留着了，可以再点一次试试。（" + err.message + "）");
+        console.error("[board] 留言提交失败：", err);
+        setStatus("err", "没贴上去，内容我帮你留着了，可以再点一次试试。（" + friendly(err) + "）");
       })
       .then(function () {
         if (timer) clearTimeout(timer);
