@@ -81,11 +81,18 @@ try {
 $before = 0
 try {
   $r2 = Invoke-WebRequest -Uri ($rest + '?select=id,name,message,created_at&order=created_at.desc&limit=50') -Headers $hdr -Method Get -TimeoutSec $TimeoutSec -UseBasicParsing
-  # PS 5.1 quirk: ConvertFrom-Json on "[]" yields $null, and @($null).Count is 1.
-  # So decide on the raw text first, otherwise an empty table is reported as 1 row.
+  # PS 5.1 quirks, both of which made the row count WRONG:
+  #   * ConvertFrom-Json on "[]" yields $null, and @($null).Count is 1
+  #   * ConvertFrom-Json returns the whole JSON array as ONE object and does
+  #     NOT enumerate it to the pipeline, so @($json | ConvertFrom-Json)
+  #     reported ANY non-empty board as "rows = 1" (a 4-row board included).
+  # So: decide on the raw text first, then parse into a variable, then wrap it.
   $raw2 = ($r2.Content).Trim()
   $rows = @()
-  if ($raw2 -and $raw2 -ne '[]') { $rows = @($raw2 | ConvertFrom-Json) }
+  if ($raw2 -and $raw2 -ne '[]') {
+    $parsed = $raw2 | ConvertFrom-Json
+    if ($null -ne $parsed) { $rows = @($parsed) }
+  }
   $before = $rows.Count
   Say ("PASS  [2/6] public read ........ HTTP " + $r2.StatusCode + "  rows = " + $before)
 } catch {
